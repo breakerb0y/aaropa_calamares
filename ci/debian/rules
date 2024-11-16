@@ -11,7 +11,7 @@ export DEB_BUILD_MAINT_OPTIONS=buildinfo=+path
 
 override_dh_auto_configure:
 	for patch in patches/*.sh ; do \
-    ./$$patches ; \
+    ./$$patch ; \
   done
 	dh_auto_configure -- \
 		-DWEBVIEW_FORCE_WEBKIT=1 \

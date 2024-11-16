@@ -1,7 +1,7 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Oliver Smith <ollieparanoid@postmarketos.org>
 pkgname=blissos-calamares
-pkgver=3.3.10
+pkgver=3.3.12
 pkgrel=6
 # armhf blocked by qt6-qtdeclarative
 # ppc64le, s390x, and riscv64 blocked by qt6-qtwebengine

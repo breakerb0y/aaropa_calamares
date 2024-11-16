@@ -14,7 +14,7 @@ RUN git clone --depth 1 https://github.com/calamares/calamares.git
 COPY . /calamares
 
 # Create .orig tarball
-RUN tar -cJf calamares_3.3.10.orig.tar.xz calamares
+RUN tar -cJf calamares_3.3.12.orig.tar.xz calamares
 
 WORKDIR "/calamares"
 
