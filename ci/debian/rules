@@ -10,14 +10,7 @@ export DEB_BUILD_MAINT_OPTIONS=buildinfo=+path
 	dh $@ --with kf5
 
 override_dh_auto_configure:
-	for patch in patches/*.sh ; do \
-    ./$$patch ; \
-  done
-	dh_auto_configure -- \
-		-DWEBVIEW_FORCE_WEBKIT=1 \
-		-DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
-		-DCMAKE_BUILD_TYPE=Release \
-		-DINSTALL_CONFIG=ON
+	./debian/prepare.sh
 
 override_dh_auto_install:
 	dh_auto_install -- || :
