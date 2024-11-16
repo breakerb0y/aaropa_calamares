@@ -18,8 +18,6 @@ _modules="
 	kernelargchooser
 	make-ab
 	mount
-	netinstall
-	networkcfg
 	notesqml
 	oemid
 	partition
