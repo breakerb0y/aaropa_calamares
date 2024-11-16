@@ -1,0 +1,32 @@
+#!/usr/bin/make -f
+
+# Hardening options, see: https://wiki.debian.org/Hardening
+export DEB_BUILD_MAINT_OPTIONS=hardening=+all
+
+# Help makes build paths reproducible
+export DEB_BUILD_MAINT_OPTIONS=buildinfo=+path
+
+%:
+	dh $@ --with kf5
+
+override_dh_auto_configure:
+	for patch in patches/*.sh ; do \
+    ./$$patches ; \
+  done
+	dh_auto_configure -- \
+		-DWEBVIEW_FORCE_WEBKIT=1 \
+		-DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DINSTALL_CONFIG=ON
+
+override_dh_auto_install:
+	dh_auto_install -- || :
+	rm -rf debian/calamares/usr/include debian/calamares/usr/lib/*/cmake
+	cp -r src/scripts debian/calamares/usr/share/calamares
+	cp -r src/modules/kernelargchooser/kernelargchooser.yaml debian/calamares/usr/share/calamares/modules
+
+# Some test don't work well, we don't need to run them at package build time.
+override_dh_auto_test:
+
+# Skip tasks that are known to fail
+override_dh_dwz:
