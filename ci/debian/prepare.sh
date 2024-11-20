@@ -7,12 +7,12 @@ done
 
 # Modules to build:
 _modules="
+	bootcfg
 	bootloader
 	finished
 	fsresizer
 	fstab
 	gen-img
-	grubcfgq
 	hostinfo
 	interactiveterminal
 	kernelargchooser
@@ -23,6 +23,7 @@ _modules="
 	partition
 	preservefiles
 	rawfs
+	refind-postconf
 	summary
 	umount
 	unpackfs
