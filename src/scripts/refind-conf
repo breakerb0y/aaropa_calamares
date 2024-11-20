@@ -1,0 +1,79 @@
+#!/bin/bash
+# shellcheck disable=SC2086,SC2001,SC2154,SC1091
+set -e
+
+if [ ! -f /boot/refind_linux.conf ] && [ ! -f "$1/boot/refind_linux.conf" ]; then
+  echo "rEFInd is disabled!"
+  exit 0
+fi
+
+. "$pkgdatadir/grub-mkconfig_lib"
+. /etc/default/grub
+
+export TEXTDOMAIN=grub
+export TEXTDOMAINDIR="${datarootdir}/locale"
+
+TITLE="BlissOS $(grep 'ro.bliss.version=' /system/build.prop | awk -F'=' '{print $2}')"
+
+ADVANCED_ARGS=(
+  "DEBUG=2 androidboot.enable_console=1"
+  "nomodeset"
+)
+
+RECOVERY_ARGS=(
+  "androidboot.pixel_format=RGBX_8888"
+  "androidboot.pixel_format=ABGR_8888"
+  "androidboot.pixel_format=ARGB_8888"
+  "androidboot.pixel_format=BGRA_8888"
+  "androidboot.pixel_format=RGBA_8888"
+)
+
+# Extra indentation to add to menu entries in a submenu. We're not in a submenu
+# yet, so it's empty. In a submenu it will be equal to '\t' (one tab).
+ROOT_DEVICE=$GRUB_DEVICE
+ROOT_UUID=$(${grub_probe} --device "$GRUB_DEVICE" --target=fs_uuid 2>/dev/null)
+ROOT_PARTUUID=$(${grub_probe} --device "$GRUB_DEVICE" --target=partuuid 2>/dev/null)
+
+[ "$ROOT_UUID" ] &&
+  ROOT_DEVICE="UUID=$ROOT_UUID"
+
+RECOVERY_PARAMETERS="RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0"
+
+conf=efi/EFI/refind/refind.conf
+CONFIG_FILE=$1/boot/$conf
+
+cat <<EOF >>"$CONFIG_FILE"
+
+menuentry "$TITLE" {
+  icon /EFI/refind/icons/blissos.png
+  volume $ROOT_PARTUUID
+  loader /kernel_a
+  initrd /initrd_a
+  options "$GRUB_CMDLINE_ANDROID ROOT=$ROOT_DEVICE SRC=$SRC androidboot.slot_suffix=_a root=/dev/ram0"
+  submenuentry "Recovery mode" {
+    add_options "$RECOVERY_PARAMETERS"
+  }
+EOF
+
+for arg in "${ADVANCED_ARGS[@]}"; do
+  cat <<EOF >>"$CONFIG_FILE"
+  submenuentry "Advanced mode: $arg" {
+    add_options "$arg"
+  }
+EOF
+done
+
+for arg in "${RECOVERY_ARGS[@]}"; do
+  cat <<EOF >>"$CONFIG_FILE"
+  submenuentry "Recovery mode: $arg" {
+    add_options "$RECOVERY_PARAMETERS $arg"
+  }
+EOF
+done
+
+cat <<EOF >>"$CONFIG_FILE"
+}
+
+EOF
+
+ln -s ../$conf "$1/boot/grub/android.cfg"

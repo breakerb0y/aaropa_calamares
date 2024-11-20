@@ -52,7 +52,7 @@ def mkdir_p(path):
 
 def run():
     """
-    Create misc.img and data.img in cases
+    Pre-config before installing bootloader
     """
     root_mount_point = libcalamares.globalstorage.value("rootMountPoint")
 
@@ -69,9 +69,27 @@ def run():
             _('rootMountPoint is "{}", which does not exist.'.format(root_mount_point)),
         )
 
-    libcalamares.utils.host_env_process_output(
-        ["/usr/share/calamares/scripts/grubcfg"], None
-    )
+    if libcalamares.job.configuration.get("bootloader", None) is None:
+        libcalamares.utils.warning("No *bootloader* key in job configuration.")
+        return (
+            _("Bad bootloader configuration"),
+            _("There is no configuration information."),
+        )
+
+    bootloader = libcalamares.job.configuration["bootloader"]
+    if bootloader == "grub":
+        command = "/usr/share/calamares/scripts/grubcfg"
+    # rEFInd pre-config is not supported yet
+    # elif bootloader == "refind":
+    #     command = "/usr/share/calamares/scripts/refind-conf"
+    else:
+        libcalamares.utils.warning("Unsupported bootloader: {}".format(bootloader))
+        return (
+            _("Unsupported bootloader"),
+            _("Unsupported bootloader: {}".format(bootloader)),
+        )
+
+    libcalamares.utils.host_env_process_output([command], None)
 
     with open(os.path.abspath("/etc/default/grub"), "a") as grubConf:
         print("GRUB_TIMEOUT=10", file=grubConf)

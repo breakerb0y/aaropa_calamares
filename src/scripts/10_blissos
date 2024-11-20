@@ -34,6 +34,7 @@ ADVANCED_ARGS=(
 )
 
 RECOVERY_ARGS=(
+	""
 	"androidboot.pixel_format=RGBX_8888"
 	"androidboot.pixel_format=ABGR_8888"
 	"androidboot.pixel_format=ARGB_8888"
@@ -72,14 +73,10 @@ android_entry() {
 
 disk="$(prepare_grub_to_access_device "$GRUB_DEVICE")"
 
-unset IFS
-
 # Extra indentation to add to menu entries in a submenu. We're not in a submenu
 # yet, so it's empty. In a submenu it will be equal to '\t' (one tab).
 ROOT_DEVICE=$GRUB_DEVICE
 ROOT_UUID=$(${grub_probe} --device "$GRUB_DEVICE" --target=fs_uuid 2>/dev/null)
-
-echo $ROOT_UUID
 
 [ "$ROOT_UUID" ] &&
 	ROOT_DEVICE="UUID=$ROOT_UUID"
@@ -99,16 +96,20 @@ entry
 
 submenu_indentation=$grub_tab
 
-echo "submenu '$(echo "Advanced options for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Advanced' {"
-for arg in "${ADVANCED_ARGS[@]}"; do
+echo "submenu '$(echo "Recovery modes for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Recovery' {"
+old_title=$TITLE
+TITLE="$TITLE - Recovery Mode"
+old_cmdline=$GRUB_CMDLINE_ANDROID
+GRUB_CMDLINE_ANDROID="$GRUB_CMDLINE_ANDROID RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0"
+for arg in "${RECOVERY_ARGS[@]}"; do
 	entry $arg
 done
 echo "}"
 
-echo "submenu '$(echo "Recovery modes for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Recovery' {"
-TITLE="$TITLE - Recovery Mode"
-GRUB_CMDLINE_ANDROID="$GRUB_CMDLINE_ANDROID RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0"
-for arg in "${RECOVERY_ARGS[@]}"; do
+echo "submenu '$(echo "Advanced options for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Advanced' {"
+TITLE=$old_title
+GRUB_CMDLINE_ANDROID=$old_cmdline
+for arg in "${ADVANCED_ARGS[@]}"; do
 	entry $arg
 done
 echo "}"

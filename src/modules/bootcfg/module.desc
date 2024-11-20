@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: CC0-1.0
 ---
 type:       "job"
-name:       "grubcfg"
+name:       "bootcfg"
 interface:  "python"
 requiredModules: [ kernelargchooser ]
 script:     "main.py"
