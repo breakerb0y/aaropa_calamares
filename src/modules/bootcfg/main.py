@@ -118,7 +118,7 @@ def run():
 
     grubDir = os.path.join(root_mount_point, "boot/grub")
     mkdir_p(grubDir)
-    with open(os.path.join(grubDir, "android.cfg"), "a") as envCfg:
+    with open(os.path.join(grubDir, "android.cfg"), "w") as envCfg:
         print("SLOT=_a", file=envCfg)
 
     libcalamares.job.setprogress(1.0)
