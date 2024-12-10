@@ -21,6 +21,11 @@ jobs:
       - name: Check out
         uses: actions/checkout@v4
 
+      - name: Set env
+        run: |
+          echo "GITHUB_ARTIFACT_VERSION=$(head -1 ci/debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}-[0-9]+')" >>"$GITHUB_ENV"
+          echo "GITHUB_ARTIFACT_ARCH=$(dpkg --print-architecture)" >>"$GITHUB_ENV"
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -36,9 +41,11 @@ jobs:
         run: |
           # Export it to install
           mkdir install
-          sudo tar -C install -psxvf install.tar
-          # Move .deb out
-          mv install/calamares_*.deb ./
+          sudo tar -C install -psxf install.tar
+
+          # Move content out
+          mv install/*.{deb,buildinfo,changes} ./
+
           # Clean up
           sudo rm -rf install install.tar
 
@@ -47,7 +54,16 @@ jobs:
         run: |
           echo "arch=$(dpkg --print-architecture)" >> "$GITHUB_OUTPUT"
 
+      - name: Upload miscs
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildinfo+changes
+          path: |
+            calamares_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.buildinfo
+            calamares_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.changes
+
       - name: Upload deb
         uses: actions/upload-artifact@v4
         with:
-          path: ./calamares_*.deb
+          name: calamares_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.deb
+          path: calamares_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.deb
