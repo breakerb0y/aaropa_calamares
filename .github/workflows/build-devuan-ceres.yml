@@ -68,6 +68,13 @@ jobs:
           name: calamares_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.deb
           path: calamares_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.deb
 
+      - name: Upload dbgsym
+        uses: actions/upload-artifact@v4
+        with:
+          name: calamares-dbgsym_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.deb
+          path: calamares-dbgsym_${{ env.GITHUB_ARTIFACT_VERSION }}_${{ env.GITHUB_ARTIFACT_ARCH }}.deb
+
+
   release:
     name: Release
     needs: build
