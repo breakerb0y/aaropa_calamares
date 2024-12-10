@@ -79,9 +79,11 @@ def run():
     bootloader = libcalamares.job.configuration["bootloader"]
     if bootloader == "grub":
         command = "/usr/share/calamares/scripts/grubcfg"
-    # rEFInd pre-config is not supported yet
-    # elif bootloader == "refind":
-    #     command = "/usr/share/calamares/scripts/refind-conf"
+    elif bootloader == "refind":
+        # rEFInd pre-config is not supported yet
+        # command = "/usr/share/calamares/scripts/refind-conf"
+        libcalamares.job.setprogress(1.0)
+        return None
     else:
         libcalamares.utils.warning("Unsupported bootloader: {}".format(bootloader))
         return (
@@ -97,9 +99,6 @@ def run():
         print("GRUB_DISTRIBUTOR=BlissLabs", file=grubConf)
         print("GRUB_GFXPAYLOAD_LINUX=keep", file=grubConf)
         print("GRUB_DISABLE_OS_PROBER=false", file=grubConf)
-
-        kernel_args = libcalamares.globalstorage.value("options")
-        print("GRUB_CMDLINE_ANDROID='" + kernel_args + "'", file=grubConf)
 
         partitions = libcalamares.globalstorage.value("partitions")
         boot_device = ""
@@ -120,6 +119,13 @@ def run():
     mkdir_p(grubDir)
     with open(os.path.join(grubDir, "android.cfg"), "w") as envCfg:
         print("SLOT=_a", file=envCfg)
+
+        kernel_args = (
+            open("/cdrom/cmdline.txt", "r").readline()
+            + " "
+            + libcalamares.globalstorage.value("options")
+        )
+        print("GRUB_CMDLINE_ANDROID='" + kernel_args + "'", file=envCfg)
 
     libcalamares.job.setprogress(1.0)
     return None

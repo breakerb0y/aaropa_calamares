@@ -41,6 +41,7 @@ RECOVERY_PARAMETERS="RCVRY=1 androidboot.mode=recovery androidboot.force_normal_
 
 conf=efi/EFI/refind/refind.conf
 CONFIG_FILE=$1/boot/$conf
+GRUB_CMDLINE_ANDROID=$(cat /cdrom/cmdline.txt)
 
 cat <<EOF >>"$CONFIG_FILE"
 

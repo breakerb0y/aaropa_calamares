@@ -42,6 +42,15 @@ RECOVERY_ARGS=(
 	"androidboot.pixel_format=RGBA_8888"
 )
 
+disk="$(prepare_grub_to_access_device "$GRUB_DEVICE")"
+
+# Extra indentation to add to menu entries in a submenu. We're not in a submenu
+# yet, so it's empty. In a submenu it will be equal to '\t' (one tab).
+ROOT_DEVICE=$GRUB_DEVICE
+ROOT_UUID=$(${grub_probe} --device "$ROOT_DEVICE" --target=fs_uuid 2>/dev/null)
+
+[ "$ROOT_UUID" ] && ROOT_DEVICE="UUID=$ROOT_UUID"
+
 android_entry() {
 	local extra_args=$*
 
@@ -65,23 +74,11 @@ android_entry() {
 
 	echo "	insmod gzio"
 	echo "$disk" | sed "s/^/$grub_tab/gm"
-	echo "	linux $SRC/kernel\$SLOT $GRUB_CMDLINE_ANDROID $extra_args root=/dev/ram0 SRC=$SRC androidboot.slot_suffix=\$SLOT"
+	echo "	linux $SRC/kernel\$SLOT \$GRUB_CMDLINE_ANDROID $extra_args ROOT=$ROOT_DEVICE root=/dev/ram0 SRC=$SRC androidboot.slot_suffix=\$SLOT"
 	echo "	initrd $SRC/initrd\$SLOT.img"
 	echo "}
 "
 }
-
-disk="$(prepare_grub_to_access_device "$GRUB_DEVICE")"
-
-# Extra indentation to add to menu entries in a submenu. We're not in a submenu
-# yet, so it's empty. In a submenu it will be equal to '\t' (one tab).
-ROOT_DEVICE=$GRUB_DEVICE
-ROOT_UUID=$(${grub_probe} --device "$GRUB_DEVICE" --target=fs_uuid 2>/dev/null)
-
-[ "$ROOT_UUID" ] &&
-	ROOT_DEVICE="UUID=$ROOT_UUID"
-
-GRUB_CMDLINE_ANDROID="$GRUB_CMDLINE_ANDROID ROOT=$ROOT_DEVICE"
 
 entry() { android_entry "$@" | sed "s/^/$submenu_indentation	/gm"; }
 
@@ -99,16 +96,13 @@ submenu_indentation=$grub_tab
 echo "submenu '$(echo "Recovery modes for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Recovery' {"
 old_title=$TITLE
 TITLE="$TITLE - Recovery Mode"
-old_cmdline=$GRUB_CMDLINE_ANDROID
-GRUB_CMDLINE_ANDROID="$GRUB_CMDLINE_ANDROID RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0"
 for arg in "${RECOVERY_ARGS[@]}"; do
-	entry $arg
+	entry RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 $arg
 done
 echo "}"
 
 echo "submenu '$(echo "Advanced options for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Advanced' {"
 TITLE=$old_title
-GRUB_CMDLINE_ANDROID=$old_cmdline
 for arg in "${ADVANCED_ARGS[@]}"; do
 	entry $arg
 done
