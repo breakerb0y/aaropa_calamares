@@ -8,12 +8,12 @@ RUN apt update && apt upgrade -y
 RUN yes | apt install -y debhelper cryptsetup pkg-kde-tools pkexec os-prober rsync git wget || :
 
 # Clone original
-RUN wget https://github.com/calamares/calamares/archive/refs/tags/v3.3.12.tar.gz -O - | tar -C calamares -xzf -
+RUN wget https://github.com/calamares/calamares/archive/refs/tags/v3.3.12.tar.gz -O - | tar -C / -xzf -
 
 # Apply patches
-COPY . /calamares
+COPY . /calamares-3.3.12
 
-WORKDIR "/calamares"
+WORKDIR /calamares-3.3.12
 
 # Create .orig tarball
 RUN tar -cJf /calamares_3.3.12.orig.tar.xz .
@@ -24,4 +24,4 @@ RUN ./ci/deps-debian11.sh
 # Move debian folder to top
 RUN mv ./ci/debian .
 
-RUN dpkg-buildpackage
+RUN dpkg-buildpackage -b --no-sign
