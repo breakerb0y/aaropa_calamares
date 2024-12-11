@@ -1,10 +1,10 @@
 #!/bin/bash
 # shellcheck disable=SC2086,2103,2164
 
+cd "$(dirname "$0")"
+
 pkgname=blissos-calamares
 pkgver=$(head -1 debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}')
-
-cd "$(dirname "$0")"
 
 # Update packages
 apt update && apt upgrade -y
