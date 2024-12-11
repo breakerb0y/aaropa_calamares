@@ -1,10 +1,14 @@
 #!/bin/bash
-# shellcheck disable=SC2086,2103,2164
+# shellcheck disable=2086,2103,2164,2317
 
 cd "$(dirname "$0")"
 
 pkgname=blissos-calamares
 pkgver=$(head -1 debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}')
+
+# avoid command failure
+exit_check() { [ "$1" = 0 ] || exit "$1"; }
+trap 'exit_check $?' EXIT
 
 # Update packages
 apt update && apt upgrade -y
