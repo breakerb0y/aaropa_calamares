@@ -1,6 +1,9 @@
 #!/bin/bash
 # shellcheck disable=SC2086,2103,2164
 
+pkgname=blissos-calamares
+pkgver=$(head -1 debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}')
+
 cd "$(dirname "$0")"
 
 # Update packages
@@ -9,15 +12,12 @@ apt update && apt upgrade -y
 # Install debhelper
 yes | apt install -y debhelper cryptsetup pkg-kde-tools pkexec os-prober rsync git wget || :
 
-
-current_ver=$(head -1 debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}')
-
 # Clone original
-wget https://github.com/calamares/calamares/archive/refs/tags/v${current_ver}.tar.gz -O - | tar -xzf -
-cp -rn calamares-${current_ver}/* ..
+wget https://github.com/calamares/calamares/archive/refs/tags/v${pkgver}.tar.gz -O - | tar -xzf -
+cp -rn calamares-${pkgver}/* ..
 cp -rf debian ..
 
-rm -rf debian calamares-${current_ver}
+rm -rf debian calamares-${pkgver}
 
 # Install dependencies
 ./deps-debian11.sh
@@ -25,6 +25,13 @@ rm -rf debian calamares-${current_ver}
 cd ..
 
 # Create .orig tarball
-tar -cJf ../blissos-calamares_${current_ver}.orig.tar.xz .
+tar -cJf ../${pkgname}_${pkgver}.orig.tar.xz .
 
 dpkg-buildpackage -b --no-sign
+
+# export metadata
+cat<<EOF>../metadata.yml
+Name: $pkgname
+Version: $pkgver
+Variants: dbgsym
+EOF
