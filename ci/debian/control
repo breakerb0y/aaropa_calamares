@@ -52,6 +52,9 @@ Depends: os-prober, rsync,
 Description: distribution-independent installer framework
   Calamares is a distribution-independent installer framework.
   .
+  This is the re-branded version of calamares, made specifically
+  for BlissOS live installer.
+  .
   It provides a graphical installer that can be used with nearly
   any distribution. This package is suitable for live media on
   Debian-based systems, and won't be of any particular use on
