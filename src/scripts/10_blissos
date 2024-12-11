@@ -86,7 +86,7 @@ entry() { android_entry "$@" | sed "s/^/$submenu_indentation	/gm"; }
 cat <<'EOF'
 source $prefix/android.cfg
 export SLOT
-export
+export CMDLINE
 EOF
 
 submenu_indentation=""
