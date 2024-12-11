@@ -4,7 +4,9 @@
 cd "$(dirname "$0")"
 
 pkgname=blissos-calamares
-pkgver=$(head -1 debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}')
+_ver=$(head -1 debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}-[0-9]+')
+pkgver=$(echo "${_ver}" | awk -F - '{print $1}')
+pkgrel=$(echo "${_ver}" | awk -F - '{print $2}')
 
 # avoid command failure
 exit_check() { [ "$1" = 0 ] || exit "$1"; }
@@ -35,7 +37,7 @@ dpkg-buildpackage -b --no-sign
 
 # export metadata
 cat <<EOF >../metadata.yml
-Name: $pkgname
-Version: $pkgver
+Name: ${pkgname}
+Version: ${_ver}
 Variants: default dbgsym
 EOF
