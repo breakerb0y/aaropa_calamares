@@ -24,7 +24,7 @@ set -e
 export TEXTDOMAIN=grub
 export TEXTDOMAINDIR="${datarootdir}/locale"
 
-CLASS="--class android --class os"
+CLASS="--class blissos --class android --class os"
 OS="Android"
 TITLE="BlissOS $(grep 'ro.bliss.version=' /system/build.prop | awk -F'=' '{print $2}')"
 
@@ -74,7 +74,7 @@ android_entry() {
 
 	echo "	insmod gzio"
 	echo "$disk" | sed "s/^/$grub_tab/gm"
-	echo "	linux $SRC/kernel\$SLOT \$GRUB_CMDLINE_ANDROID $extra_args ROOT=$ROOT_DEVICE root=/dev/ram0 SRC=$SRC androidboot.slot_suffix=\$SLOT"
+	echo "	linux $SRC/kernel\$SLOT \$CMDLINE $extra_args ROOT=$ROOT_DEVICE root=/dev/ram0 SRC=$SRC androidboot.slot_suffix=\$SLOT"
 	echo "	initrd $SRC/initrd\$SLOT.img"
 	echo "}
 "
@@ -86,6 +86,7 @@ entry() { android_entry "$@" | sed "s/^/$submenu_indentation	/gm"; }
 cat <<'EOF'
 source $prefix/android.cfg
 export SLOT
+export
 EOF
 
 submenu_indentation=""
@@ -93,16 +94,16 @@ entry
 
 submenu_indentation=$grub_tab
 
-echo "submenu '$(echo "Recovery modes for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Recovery' {"
 old_title=$TITLE
+echo "submenu '$(echo "Recovery modes for $TITLE" | grub_quote)' --class recovery ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-Recovery' {"
 TITLE="$TITLE - Recovery Mode"
 for arg in "${RECOVERY_ARGS[@]}"; do
 	entry RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 $arg
 done
 echo "}"
 
-echo "submenu '$(echo "Advanced options for $TITLE" | grub_quote)' \$menuentry_id_option '$OS-${TITLE// /_}-Advanced' {"
 TITLE=$old_title
+echo "submenu '$(echo "Advanced options for $TITLE" | grub_quote)' --class submenu ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-Advanced' {"
 for arg in "${ADVANCED_ARGS[@]}"; do
 	entry $arg
 done

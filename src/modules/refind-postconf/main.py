@@ -56,7 +56,13 @@ def run():
         )
 
     libcalamares.utils.host_env_process_output(
-        ["/usr/share/calamares/scripts/refind-conf", root_mount_point],
+        [
+            "/usr/share/calamares/scripts/refind-conf",
+            root_mount_point,
+            open("/cdrom/cmdline.txt", "r").readline()
+            + " "
+            + libcalamares.globalstorage.value("options"),
+        ],
         None,
     )
     libcalamares.job.setprogress(1.0)

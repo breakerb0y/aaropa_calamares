@@ -2,7 +2,10 @@
 # shellcheck disable=SC2086,SC2001,SC2154,SC1091
 set -e
 
-if [ ! -f /boot/refind_linux.conf ] && [ ! -f "$1/boot/refind_linux.conf" ]; then
+root=$1
+shift
+
+if [ ! -f /boot/refind_linux.conf ] && [ ! -f "$root/boot/refind_linux.conf" ]; then
   echo "rEFInd is disabled!"
   exit 0
 fi
@@ -40,8 +43,8 @@ ROOT_PARTUUID=$(${grub_probe} --device "$GRUB_DEVICE" --target=partuuid 2>/dev/n
 RECOVERY_PARAMETERS="RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0"
 
 conf=efi/EFI/refind/refind.conf
-CONFIG_FILE=$1/boot/$conf
-GRUB_CMDLINE_ANDROID=$(cat /cdrom/cmdline.txt)
+CONFIG_FILE=$root/boot/$conf
+CMDLINE=$*
 
 cat <<EOF >>"$CONFIG_FILE"
 
@@ -50,7 +53,7 @@ menuentry "$TITLE" {
   volume $ROOT_PARTUUID
   loader /kernel_a
   initrd /initrd_a
-  options "$GRUB_CMDLINE_ANDROID ROOT=$ROOT_DEVICE SRC=$SRC androidboot.slot_suffix=_a root=/dev/ram0"
+  options "$CMDLINE ROOT=$ROOT_DEVICE SRC=$SRC androidboot.slot_suffix=_a root=/dev/ram0"
   submenuentry "Recovery mode" {
     add_options "$RECOVERY_PARAMETERS"
   }
@@ -77,4 +80,4 @@ cat <<EOF >>"$CONFIG_FILE"
 
 EOF
 
-ln -s ../$conf "$1/boot/grub/android.cfg"
+ln -s ../$conf "$root/boot/grub/android.cfg"

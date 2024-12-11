@@ -117,6 +117,11 @@ def run():
 
     grubDir = os.path.join(root_mount_point, "boot/grub")
     mkdir_p(grubDir)
+
+    libcalamares.utils.host_env_process_output(
+        ["cp", "-r", "/usr/share/grub/themes", grubDir], None
+    )
+
     with open(os.path.join(grubDir, "android.cfg"), "w") as envCfg:
         print("SLOT=_a", file=envCfg)
 
@@ -125,7 +130,7 @@ def run():
             + " "
             + libcalamares.globalstorage.value("options")
         )
-        print("GRUB_CMDLINE_ANDROID='" + kernel_args + "'", file=envCfg)
+        print("CMDLINE='" + kernel_args + "'", file=envCfg)
 
     libcalamares.job.setprogress(1.0)
     return None
