@@ -30,8 +30,8 @@ tar -cJf ../${pkgname}_${pkgver}.orig.tar.xz .
 dpkg-buildpackage -b --no-sign
 
 # export metadata
-cat<<EOF>../metadata.yml
+cat <<EOF >../metadata.yml
 Name: $pkgname
 Version: $pkgver
-Variants: dbgsym
+Variants: default dbgsym
 EOF

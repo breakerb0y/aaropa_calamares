@@ -40,7 +40,7 @@ jobs:
 
           # Move content out
           mv install/*.{deb,buildinfo,changes} .
-          mv install/metadata .
+          mv install/metadata.yml .
 
           # Clean up
           sudo rm -rf install install.tar
@@ -54,7 +54,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: |
-            metadata
+            metadata.yml
             blissos-calamares_*_*.buildinfo
             blissos-calamares_*_*.changes
             blissos-calamares*_*_*.deb
