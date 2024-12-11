@@ -43,7 +43,7 @@ Homepage: https://github.com/shadichy/patches-calamares-blissos.git
 Vcs-Browser: https://github.com/shadichy/patches-calamares-blissos.git
 Vcs-Git: https://github.com/shadichy/patches-calamares-blissos.git
 
-Package: calamares
+Package: blissos-calamares
 Architecture: linux-any
 Multi-Arch: foreign
 Depends: os-prober, rsync,
