@@ -1,6 +1,6 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: <url://example.com>
-Upstream-Name: calamares
+Upstream-Name: blissos-calamares
 Upstream-Contact: <preferred name and address to reach the upstream project>
 
 Files:
@@ -19,7 +19,7 @@ License: <special license>
 Files:
  debian/*
 Copyright:
- 2024 Shadichy <shadichy.dev@gmail.com>
+ 2024 Bùi Gia Viện <shadichy@blisslabs.org>
 License: GPL-2+
  This package is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by

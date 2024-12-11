@@ -22,6 +22,6 @@ mv debian ..
 cd ..
 
 # Create .orig tarball
-tar -cJf ../calamares_${current_ver}.orig.tar.xz .
+tar -cJf ../blissos-calamares_${current_ver}.orig.tar.xz .
 
 dpkg-buildpackage -b --no-sign
