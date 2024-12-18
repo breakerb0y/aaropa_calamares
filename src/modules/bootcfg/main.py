@@ -4,7 +4,7 @@
 #
 # === This file is part of Calamares - <https://calamares.io> ===
 #
-#   SPDX-FileCopyrightText: 2024 Shadichy <shadichy.dev@gmail.com>
+#   SPDX-FileCopyrightText: 2024 Bùi Gia Viện (BlissLabs) <shadichy@blisslabs.org>
 #   SPDX-License-Identifier: GPL-3.0-or-later
 #
 #   Calamares is Free Software: see the License-Identifier above.
@@ -76,22 +76,35 @@ def run():
             _("There is no configuration information."),
         )
 
-    bootloader = libcalamares.job.configuration["bootloader"]
+    options = libcalamares.globalstorage.value("options")
+    cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
+
+    bootloader = ["grub", "refind"]["refind.conf" in str(options)]
     if bootloader == "grub":
-        command = "/usr/share/calamares/scripts/grubcfg"
+        grubDir = os.path.join(root_mount_point, "boot/grub")
+        mkdir_p(grubDir)
+
+        libcalamares.utils.host_env_process_output(
+            ["cp", "-r", "/usr/share/grub/themes", grubDir], None
+        )
+
+        with open(os.path.join(grubDir, "android.cfg"), "w") as envCfg:
+            print("SLOT=_a", file=envCfg)
+            print("CMDLINE='" + cmdline + "'", file=envCfg)
+
+        command = ["/usr/share/calamares/scripts/grubcfg"]
     elif bootloader == "refind":
-        # rEFInd pre-config is not supported yet
-        # command = "/usr/share/calamares/scripts/refind-conf"
-        libcalamares.job.setprogress(1.0)
-        return None
+        command = [
+            "/usr/share/calamares/scripts/refind-conf",
+            root_mount_point,
+            cmdline,
+        ]
     else:
         libcalamares.utils.warning("Unsupported bootloader: {}".format(bootloader))
         return (
             _("Unsupported bootloader"),
             _("Unsupported bootloader: {}".format(bootloader)),
         )
-
-    libcalamares.utils.host_env_process_output([command], None)
 
     with open(os.path.abspath("/etc/default/grub"), "a") as grubConf:
         print("GRUB_TIMEOUT=10", file=grubConf)
@@ -115,22 +128,6 @@ def run():
 
         print("SRC=", file=grubConf)
 
-    grubDir = os.path.join(root_mount_point, "boot/grub")
-    mkdir_p(grubDir)
-
-    libcalamares.utils.host_env_process_output(
-        ["cp", "-r", "/usr/share/grub/themes", grubDir], None
-    )
-
-    with open(os.path.join(grubDir, "android.cfg"), "w") as envCfg:
-        print("SLOT=_a", file=envCfg)
-
-        kernel_args = (
-            open("/cdrom/cmdline.txt", "r").readline()
-            + " "
-            + libcalamares.globalstorage.value("options")
-        )
-        print("CMDLINE='" + kernel_args + "'", file=envCfg)
-
+    libcalamares.utils.host_env_process_output(command, None)
     libcalamares.job.setprogress(1.0)
     return None

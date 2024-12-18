@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# SPDX-FileCopyrightText: 2024 Shadichy <shadichy.dev@gmail.com>
+# SPDX-FileCopyrightText: 2024 Bùi Gia Viện (BlissLabs) <shadichy@blisslabs.org>
 # SPDX-License-Identifier: BSD-2-Clause
 #
 # Test preparation for unpackfs; since there's a bunch

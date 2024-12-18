@@ -5,11 +5,6 @@ set -e
 root=$1
 shift
 
-if [ ! -f /boot/refind_linux.conf ] && [ ! -f "$root/boot/refind_linux.conf" ]; then
-  echo "rEFInd is disabled!"
-  exit 0
-fi
-
 . "$pkgdatadir/grub-mkconfig_lib"
 . /etc/default/grub
 
@@ -79,5 +74,3 @@ cat <<EOF >>"$CONFIG_FILE"
 }
 
 EOF
-
-ln -s ../$conf "$root/boot/grub/android.cfg"

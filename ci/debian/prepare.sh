@@ -23,7 +23,6 @@ _modules="
 	partition
 	preservefiles
 	rawfs
-	refind-postconf
 	summary
 	umount
 	unpackfs

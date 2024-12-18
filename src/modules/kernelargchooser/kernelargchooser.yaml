@@ -1,20 +1,10 @@
-# - name: "Recovery"
-#   description: "Used for recovery"
-#   distinct: true
-#   options:
-#     - name: "Recovery Mode (RGBX_8888 pixel format)"
-#       description: "RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 androidboot.pixel_format=RGBX_8888"
-#     - name: "Recovery Mode (ABGR_8888 pixel format)"
-#       description: "RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 androidboot.pixel_format=ABGR_8888"
-#     - name: "Recovery Mode (ARGB_8888 pixel format)"
-#       description: "RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 androidboot.pixel_format=ARGB_8888"
-#     - name: "Recovery Mode (BGRA_8888 pixel format)"
-#       description: "RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 androidboot.pixel_format=BGRA_8888"
-#     - name: "Recovery Mode (RGBA_8888 pixel format)"
-#       description: "RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 androidboot.pixel_format=RGBA_8888"
-
 - name: "Logging & Debugging"
   subgroups:
+    - name: No logging
+      options:
+        - name: "Quiet mode"
+          description: "quiet"
+          selected: true
     - name: "Virtual console"
       options:
         - name: "Enable virtual console"
@@ -217,6 +207,16 @@
           editable: true
         - name: "Enable multi refresh rate for the system"
           description: "MULTI_REFRESH_RATE=1"
+
+- name: Bootloader
+  distinct: true
+  options:
+    - name: "Use GNU GRUB bootloader"
+      description: "androidboot.bootctrl_bootcfg=/boot/grub/android.cfg"
+      selected: true
+    - name: "Use rEFInd bootloader"
+      description: "androidboot.bootctrl_bootcfg=/boot/efi/EFI/refind/refind.conf"
+
 - name: "Miscellaneous"
   options:
     - name: "Set default DPI"

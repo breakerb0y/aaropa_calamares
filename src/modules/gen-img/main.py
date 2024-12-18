@@ -4,7 +4,7 @@
 #
 # === This file is part of Calamares - <https://calamares.io> ===
 #
-#   SPDX-FileCopyrightText: 2024 Shadichy <shadichy.dev@gmail.com>
+#   SPDX-FileCopyrightText: 2024 Bùi Gia Viện (BlissLabs) <shadichy@blisslabs.org>
 #   SPDX-License-Identifier: GPL-3.0-or-later
 #
 #   Calamares is Free Software: see the License-Identifier above.
