@@ -29,17 +29,20 @@ OS="Android"
 TITLE="BlissOS $(grep 'ro.bliss.version=' /system/build.prop | awk -F'=' '{print $2}')"
 
 ADVANCED_ARGS=(
-	"DEBUG=2 androidboot.enable_console=1"
-	"nomodeset"
+	"Debug mode: DEBUG=2 androidboot.enable_console=1"
+	"No Modeset: nomodeset"
+	"No hwaccel: HWACCEL=0"
 )
 
 RECOVERY_ARGS=(
 	""
-	"androidboot.pixel_format=RGBX_8888"
-	"androidboot.pixel_format=ABGR_8888"
-	"androidboot.pixel_format=ARGB_8888"
-	"androidboot.pixel_format=BGRA_8888"
-	"androidboot.pixel_format=RGBA_8888"
+	"Debug mode: DEBUG=2 androidboot.enable_console=1"
+	"RGBX_8888 color mode: androidboot.pixel_format=RGBX_8888"
+	"ABGR_8888 color mode: androidboot.pixel_format=ABGR_8888"
+	"ARGB_8888 color mode: androidboot.pixel_format=ARGB_8888"
+	"BGRA_8888 color mode: androidboot.pixel_format=BGRA_8888"
+	"RGBA_8888 color mode: androidboot.pixel_format=RGBA_8888"
+	"BGRX_8888 color mode: androidboot.pixel_format=BGRX_8888"
 )
 
 disk="$(prepare_grub_to_access_device "$GRUB_DEVICE")"
@@ -52,9 +55,11 @@ ROOT_UUID=$(${grub_probe} --device "$ROOT_DEVICE" --target=fs_uuid 2>/dev/null)
 [ "$ROOT_UUID" ] && ROOT_DEVICE="UUID=$ROOT_UUID"
 
 android_entry() {
+	local extra_title=$1
+	shift
 	local extra_args=$*
 
-	echo "menuentry '$(echo "$TITLE${extra_args:+ - $extra_args}" | grub_quote)' ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-\$SLOT${extra_args:+-${extra_args// /_}}' {"
+	echo "menuentry '$(echo "$TITLE${extra_title:+ - $extra_title}" | grub_quote)' ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-\$SLOT${extra_args:+-${extra_args// /_}}' {"
 
 	save_default_entry | grub_add_tab
 
@@ -98,13 +103,13 @@ old_title=$TITLE
 echo "submenu '$(echo "Recovery modes for $TITLE" | grub_quote)' --class recovery ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-Recovery' {"
 TITLE="$TITLE - Recovery Mode"
 for arg in "${RECOVERY_ARGS[@]}"; do
-	entry RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 $arg
+	entry "${arg#*:}" RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 $arg
 done
 echo "}"
 
 TITLE=$old_title
 echo "submenu '$(echo "Advanced options for $TITLE" | grub_quote)' --class submenu ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-Advanced' {"
 for arg in "${ADVANCED_ARGS[@]}"; do
-	entry $arg
+	entry "${arg#*:}" $arg
 done
 echo "}"

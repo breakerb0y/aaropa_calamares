@@ -128,6 +128,10 @@ def run():
 
         print("SRC=", file=grubConf)
 
+    # (Optional) Write CMDLINE to text file at $SRC for detection
+    with open(os.path.join(root_mount_point, "cmdline.txt"), "w") as cmdlineFile:
+        print(cmdline, file=cmdlineFile)
+
     libcalamares.utils.host_env_process_output(command, None)
     libcalamares.job.setprogress(1.0)
     return None
