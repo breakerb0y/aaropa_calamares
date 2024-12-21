@@ -71,6 +71,28 @@ class OptionTreeItem : public QStandardItem {
    */
   bool isGroup() const { return m_isGroup; }
 
+  /** @brief Is this item hidden?
+   *
+   * Hidden items (generally only groups) are maintained separately,
+   * not shown to the user, but do enter into the package-installation process.
+   */
+  bool isHidden() const { return m_isHidden; }
+
+  /** @brief Is this hidden item, considered "selected"?
+   *
+   * This asserts when called on a non-hidden item.
+   * A hidden item has its own selected state, but really
+   * falls under the selectedness of the parent item.
+   */
+  bool hiddenSelected() const;
+
+  /** @brief Is this item hidden, as an exception?
+   *
+   * This test visibility of an item, if it is considered
+   * an exceptional option.
+   */
+  bool isHiddenException() const;
+
   /// @brief Is this item a single option?
   bool isOption() const { return !isGroup(); }
 
@@ -161,6 +183,7 @@ class OptionTreeItem : public QStandardItem {
   bool m_distinct = false;
   bool m_editable = false;
   bool m_isGroup = false;
+  bool m_isHidden = false;
   bool m_showReadOnly = false;
   bool m_showNoncheckable = false;
   bool m_startExpanded = false;
