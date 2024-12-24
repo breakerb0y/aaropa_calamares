@@ -69,13 +69,6 @@ def run():
             _('rootMountPoint is "{}", which does not exist.'.format(root_mount_point)),
         )
 
-    if libcalamares.job.configuration.get("bootloader", None) is None:
-        libcalamares.utils.warning("No *bootloader* key in job configuration.")
-        return (
-            _("Bad bootloader configuration"),
-            _("There is no configuration information."),
-        )
-
     options = libcalamares.globalstorage.value("options")
     cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
 
@@ -105,6 +98,17 @@ def run():
             _("Unsupported bootloader"),
             _("Unsupported bootloader: {}".format(bootloader)),
         )
+
+    # Replace bootloader name inside `bootloader` module configuration
+    libcalamares.utils.host_env_process_output(
+        [
+            "sed",
+            "-ri",
+            "'s/efiBootLoader: .+$/efiBootLoader: \"{}\"/g'".format(bootloader),
+            "/usr/share/calamares/modules/bootloader.conf"
+        ],
+        None,
+    )
 
     with open(os.path.abspath("/etc/default/grub"), "a") as grubConf:
         print("GRUB_TIMEOUT=10", file=grubConf)
