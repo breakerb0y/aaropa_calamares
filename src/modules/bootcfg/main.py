@@ -104,7 +104,7 @@ def run():
         [
             "sed",
             "-ri",
-            "'s/efiBootLoader: .+$/efiBootLoader: \"{}\"/g'".format(bootloader),
+            "s/efiBootLoader: .+/efiBootLoader: \"{}\"/g".format(bootloader),
             "/usr/share/calamares/modules/bootloader.conf"
         ],
         None,
