@@ -95,7 +95,7 @@ export CMDLINE
 EOF
 
 submenu_indentation=""
-entry
+entry ""
 
 submenu_indentation=$grub_tab
 
