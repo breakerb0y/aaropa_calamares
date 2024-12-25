@@ -53,10 +53,7 @@ Build-Depends: debhelper-compat (= 13),
   qt6-wayland-dev-tools,
   qt6-webengine-dev,
   qt6-webengine-dev-tools,
-  qt6-webengine-private-dev,
-  qml6-module-qtquick2
-  qml6-module-qtquick-controls2
-  qml6-module-qtquick-layouts
+  qt6-webengine-private-dev
 Standards-Version: 4.6.2
 Homepage: https://github.com/shadichy/patches-calamares-blissos.git
 Vcs-Browser: https://github.com/shadichy/patches-calamares-blissos.git
@@ -65,7 +62,11 @@ Vcs-Git: https://github.com/shadichy/patches-calamares-blissos.git
 Package: blissos-calamares
 Architecture: linux-any
 Multi-Arch: foreign
-Depends: os-prober, rsync,
+Depends: os-prober,
+  rsync,
+  qml6-module-qtquick2,
+  qml6-module-qtquick-controls2,
+  qml6-module-qtquick-layouts,
   ${shlibs:Depends},
   ${misc:Depends},
 Description: distribution-independent installer framework
