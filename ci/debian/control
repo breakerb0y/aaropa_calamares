@@ -53,7 +53,10 @@ Build-Depends: debhelper-compat (= 13),
   qt6-wayland-dev-tools,
   qt6-webengine-dev,
   qt6-webengine-dev-tools,
-  qt6-webengine-private-dev
+  qt6-webengine-private-dev,
+  qml6-module-qtquick2
+  qml6-module-qtquick-controls2
+  qml6-module-qtquick-layouts
 Standards-Version: 4.6.2
 Homepage: https://github.com/shadichy/patches-calamares-blissos.git
 Vcs-Browser: https://github.com/shadichy/patches-calamares-blissos.git
