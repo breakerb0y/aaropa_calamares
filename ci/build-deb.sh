@@ -33,8 +33,6 @@ cd ..
 # Create .orig tarball
 tar -cJf ../${pkgname}_${pkgver}.orig.tar.xz .
 
-rm -rf /lib/x86_64-linux-gnu/cmake/Qt6* /lib/cmake/Qt6*
-
 dpkg-buildpackage -b --no-sign
 
 # export metadata

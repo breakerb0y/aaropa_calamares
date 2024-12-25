@@ -56,4 +56,4 @@ dh_auto_configure -- \
 	-DKDE_INSTALL_USE_QT_SYS_PATHS=ON \
 	-DSKIP_MODULES="$_skip_modules" \
 	-DWEBVIEW_FORCE_WEBKIT=1 \
-	-DWITH_QT6=OFF
+	-DWITH_QT6=ON
