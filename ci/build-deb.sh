@@ -27,7 +27,7 @@ rm -rf debian calamares-${pkgver}
 
 # Install dependencies
 ./deps-debian11.sh
-apt install libkf6config-dev libkf6config-dev-bin libkf6configwidgets-dev libkf6coreaddons-dev libkf6crash-dev libkf6i18n-dev libkf6iconthemes-dev libkf6kio-dev libkf6notifyconfig-dev libkf6package-dev libkf6parts-dev libkf6service-dev libkf6solid-dev libpolkit-qt6-1-dev qt6-base-private-dev qt6-declarative-dev qt6-declarative-dev-tools qt6-declarative-private-dev qt6-quick3d-dev-tools qt6-quick3dphysics-dev-tools qt6-shadertools-dev qt6-svg-dev qt6-svg-private-dev qt6-tools-dev qt6-tools-dev-tools qt6-tools-private-dev qt6-wayland-dev-tools qt6-webengine-dev qt6-webengine-dev-tools qt6-webengine-private-dev
+yes | apt install libkf6config-dev libkf6config-dev-bin libkf6configwidgets-dev libkf6coreaddons-dev libkf6crash-dev libkf6i18n-dev libkf6iconthemes-dev libkf6kio-dev libkf6notifyconfig-dev libkf6package-dev libkf6parts-dev libkf6service-dev libkf6solid-dev libpolkit-qt6-1-dev qt6-base-private-dev qt6-declarative-dev qt6-declarative-dev-tools qt6-declarative-private-dev qt6-quick3d-dev-tools qt6-quick3dphysics-dev-tools qt6-shadertools-dev qt6-svg-dev qt6-svg-private-dev qt6-tools-dev qt6-tools-dev-tools qt6-tools-private-dev qt6-wayland-dev-tools qt6-webengine-dev qt6-webengine-dev-tools qt6-webengine-private-dev
 
 cd ..
 
