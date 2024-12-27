@@ -55,9 +55,13 @@ ROOT_UUID=$(${grub_probe} --device "$ROOT_DEVICE" --target=fs_uuid 2>/dev/null)
 [ "$ROOT_UUID" ] && ROOT_DEVICE="UUID=$ROOT_UUID"
 
 android_entry() {
-	local extra_title=$1
-	shift
-	local extra_args=$*
+	local extra_title extra_args
+
+	# shellcheck disable=SC2015
+	extra_title=$1 &&
+		shift &&
+		extra_args=$* ||
+		:
 
 	echo "menuentry '$(echo "$TITLE${extra_title:+ - $extra_title}" | grub_quote)' ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-\$SLOT${extra_args:+-${extra_args// /_}}' {"
 
@@ -95,7 +99,7 @@ export CMDLINE
 EOF
 
 submenu_indentation=""
-entry ""
+android_entry
 
 submenu_indentation=$grub_tab
 

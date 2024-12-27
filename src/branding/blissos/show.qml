@@ -89,36 +89,6 @@ Presentation
         }
     }
 
-    Slide {
-        anchors.fill: parent
-        anchors.verticalCenterOffset: 0
-
-        Image {
-            id: background5
-            source: "slide5.png"
-            width: parent.width; height: parent.height
-            horizontalAlignment: Image.AlignCenter
-            verticalAlignment: Image.AlignTop
-            fillMode: Image.Stretch
-            anchors.fill: parent
-        }
-    }
-
-    Slide {
-        anchors.fill: parent
-        anchors.verticalCenterOffset: 0
-
-        Image {
-            id: background6
-            source: "slide6.png"
-            width: parent.width; height: parent.height
-            horizontalAlignment: Image.AlignCenter
-            verticalAlignment: Image.AlignTop
-            fillMode: Image.Stretch
-            anchors.fill: parent
-        }
-    }
-
 
     // When this slideshow is loaded as a V1 slideshow, only
     // activatedInCalamares is set, which starts the timer (see above).

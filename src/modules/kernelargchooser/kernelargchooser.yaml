@@ -63,7 +63,7 @@
           description: "VOLD_USE_NTFS3=1"
         - name: "Boot & Set NTFS3 as default on vold"
           description: "USE_NTFS3=1"
-    - name: "Miscs"
+    - name: "Miscellaneous"
       options:
         - name: "Disable SDCardFS/ESDFS bind mounting"
           description: "SDCARDFS_DISABLE=1"
