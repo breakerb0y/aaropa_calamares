@@ -31,12 +31,19 @@ def pretty_name():
 
 
 FSTAB_HEADER = """# fstab.android: static file system information.
+# FORMAT=0.2
 #
 # Use 'blkid' to print the universally unique identifier for a device; this may
 # be used with UUID= as a more robust way to name devices that works even if
 # disks are added and removed. See fstab(5).
 #
-# <src>    <mnt_point>    <type>    <mnt_flags and options>    <fs_mgr_flags>"""
+# <src>    <mnt_point>    <type>    <mnt_flags and options>    <fs_mgr_flags>
+$FS/system$SLOT.img						system$SLOT
+$FS/kernel$SLOT							kernel$SLOT
+$FS/initrd$SLOT.img						initrd$SLOT
+$FS/recovery$SLOT.img					recovery$SLOT
+$FS/misc.img							misc
+"""
 
 CRYPTTAB_HEADER = """# /etc/crypttab: mappings for encrypted partitions.
 #
@@ -129,7 +136,8 @@ class FstabGenerator(object):
         self.ssd_disks = {x for x in disks if is_ssd_disk(x)}
 
     def generate_crypttab(self):
-        """ Create crypttab. """
+        """ Create crypttab (SKIPPED). """
+        return
         crypttab_path = os.path.join(self.root_mount_point, "crypttab")
 
         with open(crypttab_path, "w") as crypttab_file:
@@ -199,13 +207,17 @@ class FstabGenerator(object):
 
         with open(fstab_path, "w") as fstab_file:
             print(FSTAB_HEADER, file=fstab_file)
-            print('#>system$SLOT.img  /', file=fstab_file)
 
             for partition in self.partitions:
                 if partition["mountPoint"] == "/data":
                     has_part_data = True
                 elif partition["mountPoint"] == "/boot":
                     has_part_boot = True
+
+                dct = self.generate_fstab_line_info(partition)
+                if dct:
+                    self.print_fstab_line(dct, file=fstab_file)
+                break
 
                 # Special treatment for a btrfs subvolumes
                 if partition["fs"] == "btrfs" and partition["mountPoint"] == "/":
@@ -224,14 +236,13 @@ class FstabGenerator(object):
                     if dct:
                         self.print_fstab_line(dct, file=fstab_file)
 
+            if not has_part_boot:
+                print("$FS/boot bootloader", file=fstab_file)
             if not has_part_data:
                 if "DATA=data.img" in kernel_args:
-                    print("#>data.img  /data", file=fstab_file)
-                    print("#?/data  /data  auto  loop,noatime  defaults", file=fstab_file)
+                    print("$FS/data.img userdata ext4 defaults defaults", file=fstab_file)
                 else:
-                    print("#>data  /data", file=fstab_file)
-            if not has_part_boot:
-                print("#>boot  /boot", file=fstab_file)
+                    print("$FS/data userdata", file=fstab_file)
 
             if self.root_is_ssd:
                 # Old behavior was to mount /tmp as tmpfs
@@ -322,10 +333,8 @@ class FstabGenerator(object):
                 ["sh", "-c", "echo {} > /tmp/install_root".format(dct["device"])]
             )
             return
-        line = "#>{:41} {:<14}\n#?{:<14} {:<14} {:<7} {:<10} defaults".format(
-            dct["device"].replace("/dev/", "/dev/block/"),
-            dct["mount_point"],
-            dct["mount_point"],
+        line = "{:41} {:<14} {:<7} {:<10} defaults".format(
+            dct["device"],
             dct["mount_point"],
             dct["fs"],
             dct["options"],
