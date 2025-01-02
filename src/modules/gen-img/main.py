@@ -59,10 +59,7 @@ def run():
         [
             "/usr/share/calamares/scripts/gen-img",
             root_mount_point,
-            ["", "img"][
-                "DATA=data.img" in str(libcalamares.globalstorage.value("options"))
-                and "/data" not in str(libcalamares.globalstorage.value("partitions"))
-            ],
+            "DATA=data.img" in str(libcalamares.globalstorage.value("options")),
         ],
         None,
     )
