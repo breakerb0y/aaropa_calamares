@@ -223,8 +223,6 @@
         - name: "Force resolution on virtio-gpu driver"
           description: virtio-gpu.force_resolution=
           editable: true
-        - name: "Disable x86 syscall hardening"
-          description: syscall_hardening=off
 
 - name: Bootloader
   distinct: true
@@ -246,3 +244,5 @@
       description: "PC_MODE=1"
     - name: "Enable HPE Mode"
       description: "HPE=1"
+    - name: "Disable x86 syscall hardening"
+      description: syscall_hardening=off
