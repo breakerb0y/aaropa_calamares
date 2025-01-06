@@ -38,7 +38,7 @@ Presentation
             width: parent.width; height: parent.height
             horizontalAlignment: Image.AlignCenter
             verticalAlignment: Image.AlignTop
-            fillMode: Image.PreserveAspectRatio
+            fillMode: Image.PreserveAspectCrop
             anchors.fill: parent
         }
     }
@@ -53,7 +53,7 @@ Presentation
             width: parent.width; height: parent.height
             horizontalAlignment: Image.AlignCenter
             verticalAlignment: Image.AlignTop
-            fillMode: Image.PreserveAspectRatio
+            fillMode: Image.PreserveAspectCrop
             anchors.fill: parent
         }
     }
@@ -69,7 +69,7 @@ Presentation
             width: parent.width; height: parent.height
             horizontalAlignment: Image.AlignCenter
             verticalAlignment: Image.AlignTop
-            fillMode: Image.PreserveAspectRatio
+            fillMode: Image.PreserveAspectCrop
             anchors.fill: parent
         }
     }
