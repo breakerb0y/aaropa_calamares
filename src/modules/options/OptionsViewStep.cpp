@@ -11,18 +11,18 @@
  *
  */
 
-#include "KernelArgChooserViewStep.h"
+#include "OptionsViewStep.h"
 
-#include "KernelArgChooserPage.h"
+#include "OptionsPage.h"
 
-CALAMARES_PLUGIN_FACTORY_DEFINITION( KernelArgChooserViewStepFactory, registerPlugin< KernelArgChooserViewStep >(); )
+CALAMARES_PLUGIN_FACTORY_DEFINITION( OptionsViewStepFactory, registerPlugin< OptionsViewStep >(); )
 
-KernelArgChooserViewStep::KernelArgChooserViewStep( QObject* parent )
+OptionsViewStep::OptionsViewStep( QObject* parent )
     : Calamares::ViewStep( parent )
-    , m_widget( new KernelArgChooserPage( &m_config ) )
+    , m_widget( new OptionsPage( &m_config ) )
     , m_nextEnabled( false )
 {
-    connect( &m_config, &Config::statusReady, this, &KernelArgChooserViewStep::nextIsReady );
+    connect( &m_config, &Config::statusReady, this, &OptionsViewStep::nextIsReady );
 
     m_config.model()->setUpdateNextCall( [this]( bool enabled ) {
         this->updateNextEnabled( enabled );
@@ -30,7 +30,7 @@ KernelArgChooserViewStep::KernelArgChooserViewStep( QObject* parent )
 }
 
 
-KernelArgChooserViewStep::~KernelArgChooserViewStep()
+OptionsViewStep::~OptionsViewStep()
 {
     if ( m_widget && m_widget->parent() == nullptr )
     {
@@ -40,7 +40,7 @@ KernelArgChooserViewStep::~KernelArgChooserViewStep()
 
 
 QString
-KernelArgChooserViewStep::prettyName() const
+OptionsViewStep::prettyName() const
 {
     return m_config.sidebarLabel();
 
@@ -58,92 +58,92 @@ KernelArgChooserViewStep::prettyName() const
     tr( "Browser software" );
     tr( "Browser option" );
     tr( "Web browser" );
-    tr( "Kernel", "label for kernelargchooser module, Linux kernel" );
-    tr( "Services", "label for kernelargchooser module, system services" );
-    tr( "Login", "label for kernelargchooser module, choose login manager" );
-    tr( "Desktop", "label for kernelargchooser module, choose desktop environment" );
+    tr( "Kernel", "label for options module, Linux kernel" );
+    tr( "Services", "label for options module, system services" );
+    tr( "Login", "label for options module, choose login manager" );
+    tr( "Desktop", "label for options module, choose desktop environment" );
     tr( "Applications" );
-    tr( "Communication", "label for kernelargchooser module" );
-    tr( "Development", "label for kernelargchooser module" );
-    tr( "Office", "label for kernelargchooser module" );
-    tr( "Multimedia", "label for kernelargchooser module" );
-    tr( "Internet", "label for kernelargchooser module" );
-    tr( "Theming", "label for kernelargchooser module" );
-    tr( "Gaming", "label for kernelargchooser module" );
-    tr( "Utilities", "label for kernelargchooser module" );
+    tr( "Communication", "label for options module" );
+    tr( "Development", "label for options module" );
+    tr( "Office", "label for options module" );
+    tr( "Multimedia", "label for options module" );
+    tr( "Internet", "label for options module" );
+    tr( "Theming", "label for options module" );
+    tr( "Gaming", "label for options module" );
+    tr( "Utilities", "label for options module" );
 #endif
 }
 
 
 QWidget*
-KernelArgChooserViewStep::widget()
+OptionsViewStep::widget()
 {
     return m_widget;
 }
 
 
 bool
-KernelArgChooserViewStep::isNextEnabled() const
+OptionsViewStep::isNextEnabled() const
 {
     return !m_config.required() || m_nextEnabled;
 }
 
 
 bool
-KernelArgChooserViewStep::isBackEnabled() const
+OptionsViewStep::isBackEnabled() const
 {
     return true;
 }
 
 
 bool
-KernelArgChooserViewStep::isAtBeginning() const
+OptionsViewStep::isAtBeginning() const
 {
     return true;
 }
 
 
 bool
-KernelArgChooserViewStep::isAtEnd() const
+OptionsViewStep::isAtEnd() const
 {
     return true;
 }
 
 
 Calamares::JobList
-KernelArgChooserViewStep::jobs() const
+OptionsViewStep::jobs() const
 {
     return Calamares::JobList();
 }
 
 
 void
-KernelArgChooserViewStep::onActivate()
+OptionsViewStep::onActivate()
 {
     m_widget->onActivate();
 }
 
 void
-KernelArgChooserViewStep::onLeave()
+OptionsViewStep::onLeave()
 {
     m_config.finalizeGlobalStorage();
 }
 
 void
-KernelArgChooserViewStep::nextIsReady()
+OptionsViewStep::nextIsReady()
 {
     m_nextEnabled = true;
     emit nextStatusChanged( true );
 }
 
 void
-KernelArgChooserViewStep::setConfigurationMap( const QVariantMap& configurationMap )
+OptionsViewStep::setConfigurationMap( const QVariantMap& configurationMap )
 {
     m_config.setConfigurationMap( configurationMap );
 }
 
 void
-KernelArgChooserViewStep::updateNextEnabled( bool enabled )
+OptionsViewStep::updateNextEnabled( bool enabled )
 {
     m_nextEnabled = enabled;
     emit nextStatusChanged( enabled );

@@ -10,7 +10,7 @@
  *
  */
 
-#include "KernelArgChooserPage.h"
+#include "OptionsPage.h"
 
 #include "OptionModel.h"
 #include "ui_page_chooser.h"
@@ -26,7 +26,7 @@
 #include <QHeaderView>
 #include <QNetworkReply>
 
-KernelArgChooserPage::KernelArgChooserPage( Config* c, QWidget* parent )
+OptionsPage::OptionsPage( Config* c, QWidget* parent )
     : QWidget( parent )
     , m_config( c )
     , ui( new Ui::Page_NetInst )
@@ -42,13 +42,13 @@ KernelArgChooserPage::KernelArgChooserPage( Config* c, QWidget* parent )
                  ui->label->setVisible( !title.isEmpty() );
                  ui->label->setText( title );
              } );
-    connect( c, &Config::statusReady, this, &KernelArgChooserPage::expandGroups );
+    connect( c, &Config::statusReady, this, &OptionsPage::expandGroups );
 }
 
-KernelArgChooserPage::~KernelArgChooserPage() {}
+OptionsPage::~OptionsPage() {}
 
 void
-KernelArgChooserPage::expandGroups()
+OptionsPage::expandGroups()
 {
     auto* model = m_config->model();
     // Go backwards because expanding a group may cause rows to appear below it
@@ -63,7 +63,7 @@ KernelArgChooserPage::expandGroups()
 }
 
 void
-KernelArgChooserPage::onActivate()
+OptionsPage::onActivate()
 {
     ui->groupswidget->setFocus();
 }

@@ -91,6 +91,7 @@
     - name: "Set fake battery level"
       description: "SET_FAKE_BATTERY_LEVEL="
       editable: true
+      default: "50"
     - name: "Set fake charging status"
       description: "SET_FAKE_CHARGING_STATUS=1"
     - name: "Set fake battery info by AOSP"
@@ -114,6 +115,7 @@
     - name: "Set default Bluetooth UART port"
       description: "BTUART_PORT="
       editable: true
+      default: "Port..."
 
 - name: "Graphics"
   subgroups:
@@ -205,24 +207,29 @@
         - name: "Number of multi-plance in HWC"
           description: "MULTI_PLANE_NUM="
           editable: true
+          default: "2"
         - name: "Support all display modes"
           description: "HWC_PREFER_MODE=0"
         - name: "Specify Connector ID"
           description: "CONNECTOR_ID="
           editable: true
+          default: "1"
         - name: "Specify Mode ID"
           description: "MODE_ID="
           editable: true
+          default: "1"
         - name: "Enable multi refresh rate for the system"
           description: "MULTI_REFRESH_RATE=1"
     - name: "Miscellaneous"
       options:
         - name: "Force resolution on vmwgfx driver"
-          description: vmwgfx.force_resolution=
+          description: "vmwgfx.force_resolution="
           editable: true
+          default: "1280x720"
         - name: "Force resolution on virtio-gpu driver"
-          description: virtio-gpu.force_resolution=
+          description: "virtio-gpu.force_resolution="
           editable: true
+          default: "1280x720"
 
 - name: Bootloader
   distinct: true
@@ -238,6 +245,7 @@
     - name: "Set default DPI"
       description: "DPI="
       editable: true
+      default: "136"
     - name: "Force disable Setup Wizard"
       description: "SETUPWIZARD=0"
     - name: "Enable PC Mode"

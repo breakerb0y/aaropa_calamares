@@ -309,11 +309,11 @@ ItemTests::testModel()
 void
 ItemTests::testExampleFiles()
 {
-    QVERIFY( QStringLiteral( BUILD_AS_TEST ).endsWith( "/kernelargchooser" ) );
+    QVERIFY( QStringLiteral( BUILD_AS_TEST ).endsWith( "/options" ) );
 
     QDir d( BUILD_AS_TEST );
 
-    for ( const QString& filename : QStringList { "kernelargchooser.yaml" } )
+    for ( const QString& filename : QStringList { "options.yaml" } )
     {
         QFile f( d.filePath( filename ) );
         QVERIFY( f.exists() );

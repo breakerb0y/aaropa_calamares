@@ -3,15 +3,15 @@
 #   SPDX-FileCopyrightText: 2020 Adriaan de Groot <groot@kde.org>
 #   SPDX-License-Identifier: BSD-2-Clause
 #
-calamares_add_plugin(kernelargchooser
+calamares_add_plugin(options
     TYPE viewmodule
     EXPORT_MACRO PLUGINDLLEXPORT_PRO
     SOURCES
         Config.cpp
         groupstreeview.cpp
         LoaderQueue.cpp
-        KernelArgChooserViewStep.cpp
-        KernelArgChooserPage.cpp
+        OptionsViewStep.cpp
+        OptionsPage.cpp
         OptionTreeItem.cpp
         OptionModel.cpp
     UI
@@ -24,7 +24,7 @@ calamares_add_plugin(kernelargchooser
 
 if(TARGET ${kfname}::CoreAddons)
     #calamares_add_test(
-    #    kernelargchoosertest
+    #    optionstest
     #    SOURCES Tests.cpp Config.cpp LoaderQueue.cpp OptionTreeItem.cpp OptionModel.cpp
     #    LIBRARIES ${qtname}::Widgets ${qtname}::Gui ${qtname}::Network ${kfname}::CoreAddons
     #)

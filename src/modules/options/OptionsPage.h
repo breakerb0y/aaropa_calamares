@@ -31,12 +31,12 @@ namespace Ui
 class Page_NetInst;
 }  // namespace Ui
 
-class KernelArgChooserPage : public QWidget
+class OptionsPage : public QWidget
 {
     Q_OBJECT
 public:
-    KernelArgChooserPage( Config* config, QWidget* parent = nullptr );
-    ~KernelArgChooserPage() override;
+    OptionsPage( Config* config, QWidget* parent = nullptr );
+    ~OptionsPage() override;
 
     void onActivate();
 

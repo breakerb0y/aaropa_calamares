@@ -15,7 +15,7 @@ _modules="
 	gen-img
 	hostinfo
 	interactiveterminal
-	kernelargchooser
+	options
 	make-ab
 	mount
 	notesqml

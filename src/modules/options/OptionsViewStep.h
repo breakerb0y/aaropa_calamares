@@ -20,15 +20,15 @@
 
 #include <QVariant>
 
-class KernelArgChooserPage;
+class OptionsPage;
 
-class PLUGINDLLEXPORT KernelArgChooserViewStep : public Calamares::ViewStep
+class PLUGINDLLEXPORT OptionsViewStep : public Calamares::ViewStep
 {
     Q_OBJECT
 
 public:
-    explicit KernelArgChooserViewStep( QObject* parent = nullptr );
-    ~KernelArgChooserViewStep() override;
+    explicit OptionsViewStep( QObject* parent = nullptr );
+    ~OptionsViewStep() override;
 
     QString prettyName() const override;
 
@@ -57,10 +57,10 @@ public slots:
 private:
     Config m_config;
 
-    KernelArgChooserPage* m_widget;
+    OptionsPage* m_widget;
     bool m_nextEnabled = false;
 };
 
-CALAMARES_PLUGIN_FACTORY_DECLARATION( KernelArgChooserViewStepFactory )
+CALAMARES_PLUGIN_FACTORY_DECLARATION( OptionsViewStepFactory )
 
 #endif  // NETINSTALLVIEWSTEP_H

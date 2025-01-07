@@ -4,5 +4,5 @@
 type:       "job"
 name:       "bootcfg"
 interface:  "python"
-requiredModules: [ kernelargchooser ]
+requiredModules: [ options ]
 script:     "main.py"

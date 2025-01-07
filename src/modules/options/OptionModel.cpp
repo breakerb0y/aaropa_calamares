@@ -355,7 +355,13 @@ OptionModel::setupModelData( const QVariantList& groupList, OptionTreeItem* pare
                     QVariantMap m = optionName.toMap();
                     if ( !m.isEmpty() )
                     {
-                        item->appendChild( new OptionTreeItem( m, OptionTreeItem::OptionTag { item } ) );
+                        OptionTreeItem* child = new OptionTreeItem( m, OptionTreeItem::OptionTag { item } );
+                        if ( m.contains( "selected" ) )
+                        {
+                            child->setSelected( Calamares::getBool( m, "selected", false ) ? Qt::Checked
+                                                                                           : Qt::Unchecked );
+                        }
+                        item->appendChild( child );
                     }
                 }
             }

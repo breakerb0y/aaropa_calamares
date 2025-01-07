@@ -87,7 +87,7 @@ Config::loadGroupList( const QVariantList& groupData )
     m_model->setupModelData( groupData );
     if ( m_model->rowCount() < 1 )
     {
-        cWarning() << "KernelArgChooser groups data was empty.";
+        cWarning() << "Options groups data was empty.";
         setStatus( Status::FailedNoData );
     }
     else
@@ -116,9 +116,9 @@ Config::setConfigurationMap( const QVariantMap& configurationMap )
     bool bogus = false;
     auto label = Calamares::getSubMap( configurationMap, "label", bogus );
     // Use a different class name for translation lookup because the
-    // .. table of strings lives in KernelArgChooserViewStep.cpp and moving them
+    // .. table of strings lives in OptionsViewStep.cpp and moving them
     // .. around is annoying for translators.
-    static const char className[] = "KernelArgChooserViewStep";
+    static const char className[] = "OptionsViewStep";
 
     if ( label.contains( "sidebar" ) )
     {
@@ -146,7 +146,7 @@ Config::setConfigurationMap( const QVariantMap& configurationMap )
     }
 
     setStatus( required() ? Status::FailedNoData : Status::Ok );
-    cDebug() << "Loading kernelargchooser from" << m_queue->count() << "alternate sources.";
+    cDebug() << "Loading options from" << m_queue->count() << "alternate sources.";
     connect( m_queue, &LoaderQueue::done, this, &Config::loadingDone );
     m_queue->load();
 }
