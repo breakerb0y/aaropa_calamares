@@ -231,7 +231,7 @@
           editable: true
           default: "1280x720"
 
-- name: Bootloader
+- name: "Bootloader"
   distinct: true
   options:
     - name: "Use GNU GRUB bootloader"
@@ -239,6 +239,13 @@
       selected: true
     - name: "Use rEFInd bootloader"
       description: "androidboot.bootctrl_bootcfg=/boot/efi/EFI/refind/refind.conf"
+
+- name: "Recovery"
+  options:
+    - name: "ADB port"
+      description: "DEBUG_NET_PORT="
+      editable: true
+      default: "5555"
 
 - name: "Miscellaneous"
   options:
