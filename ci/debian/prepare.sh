@@ -11,7 +11,7 @@ _modules="
 	bootloader
 	finished
 	fsresizer
-	fstab
+	gen-fstab
 	gen-img
 	hostinfo
 	interactiveterminal
