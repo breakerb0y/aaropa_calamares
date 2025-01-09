@@ -363,6 +363,10 @@ OptionModel::setupModelData( const QVariantList& groupList, OptionTreeItem* pare
             {
                 cWarning() << "*options* under" << item->name() << "is empty.";
             }
+            else
+            {
+                item->updateSelected();
+            }
         }
         if ( groupMap.contains( "subgroups" ) )
         {

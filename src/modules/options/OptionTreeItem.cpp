@@ -61,10 +61,6 @@ OptionTreeItem::OptionTreeItem( const QVariantMap& groupData, OptionTag&& parent
                    : "" )
     , m_showReadOnly( parent.parent ? parent.parent->isImmutable() : false )
 {
-    if ( m_selected == Qt::Checked )
-    {
-        this->setSelected( Qt::Checked );
-    }
 }
 
 OptionTreeItem::OptionTreeItem( const QVariantMap& groupData, GroupTag&& parent )
