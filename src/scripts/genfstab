@@ -439,7 +439,7 @@ while read -r src target fstype opts fsroot; do
 
   # write one line
   write_source "$src"
-  printf '\t%-10s' "$(target_to_mntpt "$(mangle "${target#/}")")" "$fstype" "$opts"
+  printf '\t%-10s' "$(target_to_mntpt "$(mangle "${target#/}")")" "$fstype" "defaults"
   printf '\tdefaults'
   printf '\n\n'
 done < <(findmnt -Recvruno SOURCE,TARGET,FSTYPE,OPTIONS,FSROOT "$root" | grep -Ev '^/\s')
