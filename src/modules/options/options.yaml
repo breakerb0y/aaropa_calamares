@@ -91,7 +91,7 @@
     - name: "Set fake battery level"
       description: "SET_FAKE_BATTERY_LEVEL="
       editable: true
-      default: "50"
+      default: "50 "
     - name: "Set fake charging status"
       description: "SET_FAKE_CHARGING_STATUS=1"
     - name: "Set fake battery info by AOSP"
@@ -245,14 +245,14 @@
     - name: "ADB port"
       description: "DEBUG_NET_PORT="
       editable: true
-      default: "5555"
+      default: "5555 "
 
 - name: "Miscellaneous"
   options:
     - name: "Set default DPI"
       description: "DPI="
       editable: true
-      default: "136"
+      default: "136 "
     - name: "Force disable Setup Wizard"
       description: "SETUPWIZARD=0"
     - name: "Enable PC Mode"

@@ -60,9 +60,11 @@ OptionTreeItem::OptionTreeItem( const QVariantMap& groupData, OptionTag&& parent
                    ? Calamares::getString( groupData, "default", "Value..." )
                    : "" )
     , m_showReadOnly( parent.parent ? parent.parent->isImmutable() : false )
-    , m_range_max( Calamares::getInteger( groupData, "range_max" ) )
-    , m_range_min( Calamares::getInteger( groupData, "range_min" ) )
 {
+    if ( m_selected == Qt::Checked )
+    {
+        this->setSelected( Qt::Checked );
+    }
 }
 
 OptionTreeItem::OptionTreeItem( const QVariantMap& groupData, GroupTag&& parent )
@@ -302,7 +304,7 @@ OptionTreeItem::selectChildren( QString optionName )
     m_selected = Qt::Checked;
     for ( auto child : m_childItems )
     {
-        if ( child->optionName().compare( optionName, Qt::CaseInsensitive ) )
+        if ( child->optionName().compare( optionName, Qt::CaseInsensitive ) == 0 )
         {
             child->m_selected = Qt::Checked;
             child->setChildrenSelected( Qt::Checked );
