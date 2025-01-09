@@ -107,7 +107,7 @@ old_title=$TITLE
 echo "submenu '$(echo "Recovery modes for $TITLE" | grub_quote)' --class recovery ${CLASS} \$menuentry_id_option '$OS-${TITLE// /_}-Recovery' {"
 TITLE="$TITLE - Recovery Mode"
 for arg in "${RECOVERY_ARGS[@]}"; do
-	entry "${arg%:*}" RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0 ${arg#*:}
+	entry "${arg%:*}" androidboot.mode=recovery androidboot.force_normal_boot=0 ${arg#*:}
 done
 echo "}"
 

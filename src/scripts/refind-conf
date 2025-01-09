@@ -5,7 +5,7 @@ set -e
 root=$1
 shift
 
-. "$pkgdatadir/grub-mkconfig_lib"
+. "/usr/share/grub/grub-mkconfig_lib"
 . /etc/default/grub
 
 export TEXTDOMAIN=grub
@@ -14,16 +14,20 @@ export TEXTDOMAINDIR="${datarootdir}/locale"
 TITLE="BlissOS $(grep 'ro.bliss.version=' /system/build.prop | awk -F'=' '{print $2}')"
 
 ADVANCED_ARGS=(
-  "DEBUG=2 androidboot.enable_console=1"
-  "nomodeset"
+	"Debug mode: DEBUG=2 androidboot.enable_console=1"
+	"No Modeset: nomodeset"
+	"No hwaccel: HWACCEL=0"
 )
 
 RECOVERY_ARGS=(
-  "androidboot.pixel_format=RGBX_8888"
-  "androidboot.pixel_format=ABGR_8888"
-  "androidboot.pixel_format=ARGB_8888"
-  "androidboot.pixel_format=BGRA_8888"
-  "androidboot.pixel_format=RGBA_8888"
+	""
+	"Debug mode: DEBUG=2 androidboot.enable_console=1"
+	"RGBX_8888 color mode: androidboot.pixel_format=RGBX_8888"
+	"ABGR_8888 color mode: androidboot.pixel_format=ABGR_8888"
+	"ARGB_8888 color mode: androidboot.pixel_format=ARGB_8888"
+	"BGRA_8888 color mode: androidboot.pixel_format=BGRA_8888"
+	"RGBA_8888 color mode: androidboot.pixel_format=RGBA_8888"
+	"BGRX_8888 color mode: androidboot.pixel_format=BGRX_8888"
 )
 
 # Extra indentation to add to menu entries in a submenu. We're not in a submenu
@@ -35,7 +39,7 @@ ROOT_PARTUUID=$(${grub_probe} --device "$GRUB_DEVICE" --target=partuuid 2>/dev/n
 [ "$ROOT_UUID" ] &&
   ROOT_DEVICE="UUID=$ROOT_UUID"
 
-RECOVERY_PARAMETERS="RCVRY=1 androidboot.mode=recovery androidboot.force_normal_boot=0"
+RECOVERY_PARAMETERS="androidboot.mode=recovery androidboot.force_normal_boot=0"
 
 conf=efi/EFI/refind/refind.conf
 CONFIG_FILE=$root/boot/$conf
@@ -56,16 +60,16 @@ EOF
 
 for arg in "${ADVANCED_ARGS[@]}"; do
   cat <<EOF >>"$CONFIG_FILE"
-  submenuentry "Advanced mode: $arg" {
-    add_options "$arg"
+  submenuentry "Advanced mode: ${arg%:*}" {
+    add_options "${arg#*:}"
   }
 EOF
 done
 
 for arg in "${RECOVERY_ARGS[@]}"; do
   cat <<EOF >>"$CONFIG_FILE"
-  submenuentry "Recovery mode: $arg" {
-    add_options "$RECOVERY_PARAMETERS $arg"
+  submenuentry "Recovery mode: ${arg%:*}" {
+    add_options "$RECOVERY_PARAMETERS ${arg#*:}"
   }
 EOF
 done

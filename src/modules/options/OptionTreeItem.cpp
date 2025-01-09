@@ -25,7 +25,7 @@ parentCheckState( OptionTreeItem* parent )
     if ( parent )
     {
         // Avoid partially-checked .. a option can't be partial
-        return parent->isSelected() == Qt::Unchecked ? Qt::Unchecked : Qt::Checked;
+        return parent->isDistinct() || parent->isSelected() == Qt::Unchecked ? Qt::Unchecked : Qt::Checked;
     }
     else
     {

@@ -75,7 +75,7 @@ def run():
     genfstab_output = subprocess.run(
         ["/usr/share/calamares/scripts/genfstab", "-U", root_mount_point],
         stdout=subprocess.PIPE,
-    ).stdout
+    ).stdout.decode()
 
     kernel_args = str(libcalamares.globalstorage.value("options"))
 

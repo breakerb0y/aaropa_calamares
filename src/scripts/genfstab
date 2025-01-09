@@ -322,6 +322,17 @@ optstring_apply_quirks() {
   esac
 }
 
+target_to_mntpt() {
+  local ret
+	case "$1" in
+	boot) ret=bootloader ;;
+	boot/efi) ret=esp ;;
+	data) ret=userdata ;;
+	*) ret=$1 ;;
+	esac
+  printf "%s" "$ret"
+}
+
 usage() {
   cat <<EOF
 usage: ${0##*/} [options] root
@@ -350,30 +361,14 @@ fi
 
 while getopts ':f:LPpt:U' flag; do
   case $flag in
-    L)
-      bytag=LABEL
-      ;;
-    U)
-      bytag=UUID
-      ;;
-    f)
-      prefixfilter=$OPTARG
-      ;;
-    P)
-      pseudofs=1
-      ;;
-    p)
-      pseudofs=0
-      ;;
-    t)
-      bytag=${OPTARG^^}
-      ;;
-    :)
-      die '%s: option requires an argument -- '\''%s'\' "${0##*/}" "$OPTARG"
-      ;;
-    ?)
-      die '%s: invalid option -- '\''%s'\' "${0##*/}" "$OPTARG"
-      ;;
+    L) bytag=LABEL ;;
+    U) bytag=UUID ;;
+    f) prefixfilter=$OPTARG ;;
+    P) pseudofs=1 ;;
+    p) pseudofs=0 ;;
+    t) bytag=${OPTARG^^} ;;
+    :) die '%s: option requires an argument -- '\''%s'\' "${0##*/}" "$OPTARG" ;;
+    ?) die '%s: invalid option -- '\''%s'\' "${0##*/}" "$OPTARG" ;;
   esac
 done
 shift $(( OPTIND - 1 ))
@@ -444,39 +439,39 @@ while read -r src target fstype opts fsroot; do
 
   # write one line
   write_source "$src"
-  printf '\t%-10s' "/$(mangle "${target#/}")" "$fstype" "$opts"
+  printf '\t%-10s' "$(target_to_mntpt "$(mangle "${target#/}")")" "$fstype" "$opts"
   printf '\tdefaults'
   printf '\n\n'
-done < <(findmnt -Recvruno SOURCE,TARGET,FSTYPE,OPTIONS,FSROOT "$root")
+done < <(findmnt -Recvruno SOURCE,TARGET,FSTYPE,OPTIONS,FSROOT "$root" | grep -Ev '^/\s')
 
-# handle swaps devices
-{
-  # ignore header
-  read
+# # handle swaps devices
+# {
+#   # ignore header
+#   read
 
-  while read -r device type _ _ prio; do
-    options=defaults
-    if (( prio >= 0 )); then
-      options+=,pri=$prio
-    fi
+#   while read -r device type _ _ prio; do
+#     options=defaults
+#     if (( prio >= 0 )); then
+#       options+=,pri=$prio
+#     fi
 
-    # skip files marked deleted by the kernel
-    [[ $device = *'\040(deleted)' ]] && continue
+#     # skip files marked deleted by the kernel
+#     [[ $device = *'\040(deleted)' ]] && continue
 
-    # skip devices not part of the prefix
-    [[ $device = "$prefixfilter"* ]] || continue
+#     # skip devices not part of the prefix
+#     [[ $device = "$prefixfilter"* ]] || continue
 
-    if [[ $type = file ]]; then
-      printf '%-20s' "${device#${root%/}}"
-    elif [[ $device = /dev/dm-+([0-9]) ]]; then
-      # device mapper doesn't allow characters we need to worry
-      # about being mangled, and it does the escaping of dashes
-      # for us in sysfs.
-      write_source "$(dm_name_for_devnode "$device")"
-    else
-      write_source "$(unmangle "$device")"
-    fi
+#     if [[ $type = file ]]; then
+#       printf '%-20s' "${device#${root%/}}"
+#     elif [[ $device = /dev/dm-+([0-9]) ]]; then
+#       # device mapper doesn't allow characters we need to worry
+#       # about being mangled, and it does the escaping of dashes
+#       # for us in sysfs.
+#       write_source "$(dm_name_for_devnode "$device")"
+#     else
+#       write_source "$(unmangle "$device")"
+#     fi
 
-    printf '\t%-10s\t%-10s\t%-10s\tdefaults\n\n' 'none' 'swap' "$options"
-  done
-} </proc/swaps
+#     printf '\t%-10s\t%-10s\t%-10s\tdefaults\n\n' 'none' 'swap' "$options"
+#   done
+# } </proc/swaps
