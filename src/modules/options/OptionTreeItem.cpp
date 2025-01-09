@@ -53,7 +53,7 @@ OptionTreeItem::OptionTreeItem( const QVariantMap& groupData, OptionTag&& parent
     , m_name( Calamares::getString( groupData, "name" ) )
     , m_optionName( Calamares::getString( groupData, "name" ) )
     , m_isHidden( isHiddenException() || Calamares::getBool( groupData, "hidden", false ) )
-    , m_selected( parentCheckState( parent.parent ) )
+    , m_selected( Calamares::getBool( groupData, "selected", false ) ? Qt::Checked : parentCheckState( parent.parent ) )
     , m_description( Calamares::getString( groupData, "description" ) )
     , m_editable( Calamares::getBool( groupData, "editable", false ) )
     , m_input( Calamares::getBool( groupData, "editable", false )
@@ -302,7 +302,7 @@ OptionTreeItem::selectChildren( QString optionName )
     m_selected = Qt::Checked;
     for ( auto child : m_childItems )
     {
-        if ( child->m_optionName == optionName )
+        if ( child->optionName().compare( optionName, Qt::CaseInsensitive ) )
         {
             child->m_selected = Qt::Checked;
             child->setChildrenSelected( Qt::Checked );

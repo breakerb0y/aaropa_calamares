@@ -1,10 +1,10 @@
 - name: "Logging & Debugging"
   subgroups:
     - name: No logging
+      selected: true
       options:
         - name: "Quiet mode"
           description: "quiet"
-          selected: true
     - name: "Virtual console"
       options:
         - name: "Enable virtual console"
@@ -68,7 +68,7 @@
         - name: "Disable SDCardFS/ESDFS bind mounting"
           description: "SDCARDFS_DISABLE=1"
         - name: "Mount all internal partitions"
-          description: INTERNAL_MOUNT=1
+          description: "INTERNAL_MOUNT=1"
         - name: "Use disk image data"
           description: "DATA=data.img"
 
@@ -260,4 +260,4 @@
     - name: "Enable HPE Mode"
       description: "HPE=1"
     - name: "Disable x86 syscall hardening"
-      description: syscall_hardening=off
+      description: "syscall_hardening=off"
