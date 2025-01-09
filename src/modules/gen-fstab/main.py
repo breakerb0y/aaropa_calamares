@@ -12,6 +12,7 @@
 
 import os
 import subprocess
+import re
 
 import libcalamares
 
@@ -83,10 +84,10 @@ def run():
         print(FSTAB_HEADER, file=fstab_file)
         print(genfstab_output, file=fstab_file)
 
-        if "/boot\t" not in genfstab_output:
+        if not re.search("/boot\\s", genfstab_output):
             print("$FS/boot bootloader", file=fstab_file)
 
-        if "/data\t" not in genfstab_output:
+        if not re.search("/data\\s", genfstab_output):
             if "DATA=data.img" in kernel_args:
                 print("$FS/data.img userdata ext4 defaults defaults", file=fstab_file)
             else:
