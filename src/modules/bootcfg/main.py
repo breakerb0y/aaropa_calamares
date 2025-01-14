@@ -78,7 +78,7 @@ def run():
         mkdir_p(grubDir)
 
         libcalamares.utils.host_env_process_output(
-            ["cp", "-r", "/usr/share/grub/themes", grubDir], None
+            ["cp", "-r", "/usr/share/grub/themes/", grubDir], None
         )
 
         with open(os.path.join(grubDir, "android.cfg"), "w") as envCfg:
