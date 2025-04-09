@@ -64,6 +64,10 @@ def run():
             _('rootMountPoint is "{}", which does not exist.'.format(root_mount_point)),
         )
 
+    sys_prefix = "/usr/share"
+    calamares_shared = sys_prefix + "/calamares"
+    scriptdir = calamares_shared + "/scripts"
+
     options = libcalamares.globalstorage.value("options")
     cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
     if "grub/android.cfg" in str(options):
@@ -72,7 +76,7 @@ def run():
         mkdir_p(grubDir)
 
         libcalamares.utils.host_env_process_output(
-            ["cp", "-r", "/usr/share/grub/themes/", grubDir], None
+            ["cp", "-r", sys_prefix + "/grub/themes/", grubDir], None
         )
 
         with open(os.path.join(grubDir, "android.cfg"), "w") as envCfg:
@@ -80,11 +84,11 @@ def run():
             print("CMDLINE='" + cmdline + "'", file=envCfg)
             print("MODE=normal", file=envCfg)
 
-        command = ["/usr/share/calamares/scripts/grubcfg"]
+        command = [scriptdir + "/grubcfg"]
     elif "refind/android.conf" in str(options):
         bootloader = "refind"
         command = [
-            "/usr/share/calamares/scripts/refind-conf",
+            scriptdir + "/refind-conf",
             root_mount_point,
             cmdline,
         ]
@@ -92,7 +96,7 @@ def run():
         libcalamares.utils.warning("Unsupported bootloader: {}".format(bootloader))
         bootloader = "none"
         command = [
-            "/usr/share/calamares/scripts/no-bootloader",
+            scriptdir + "/no-bootloader",
             root_mount_point,
             cmdline,
         ]
@@ -101,9 +105,10 @@ def run():
     libcalamares.utils.host_env_process_output(
         [
             "sed",
-            "-ri",
+            "-i",
+            "-r",
             's/efiBootLoader: .+/efiBootLoader: "{}"/g'.format(bootloader),
-            "/usr/share/calamares/modules/bootloader.conf",
+            calamares_shared + "/modules/bootloader.conf",
         ],
         None,
     )

@@ -64,6 +64,10 @@ def run():
             _('rootMountPoint is "{}", which does not exist.'.format(root_mount_point)),
         )
 
+    sys_prefix = "/usr/share"
+    calamares_shared = sys_prefix + "/calamares"
+    scriptdir = calamares_shared + "/scripts"
+
     options = libcalamares.globalstorage.value("options")
     cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
     if "grub/android.cfg" in str(options):
@@ -72,7 +76,7 @@ def run():
     elif "refind.conf" in str(options):
         bootloader = "refind"
         command = [
-            "/usr/share/calamares/scripts/refind-postconf",
+            scriptdir + "/refind-postconf",
             root_mount_point,
             cmdline,
         ]
