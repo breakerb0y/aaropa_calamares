@@ -44,6 +44,20 @@ def mkdir_p(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
+sys_prefix = "/usr/share"
+calamares_shared = sys_prefix + "/calamares"
+scriptdir = calamares_shared + "/scripts"
+
+def is_bootloader(name):
+    """
+    Check if bootloader is specified.
+    """
+    return libcalamares.utils.target_env_call([
+        "/usr/bin/grep",
+        "-q",
+        'efiBootLoader: "{}"'.format(name),
+        calamares_shared + "/modules/bootloader.conf"
+    ]) == 0
 
 def run():
     """
@@ -70,10 +84,11 @@ def run():
 
     options = libcalamares.globalstorage.value("options")
     cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
-    if "grub/android.cfg" in str(options):
+
+    if is_bootloader("grub"):
         bootloader = "grub"
         command = ["echo", "Skipping"]
-    elif "refind.conf" in str(options):
+    elif is_bootloader("refind"):
         bootloader = "refind"
         command = [
             scriptdir + "/refind-postconf",

@@ -10,3 +10,6 @@ sed -i -r 's/(run_grub_install\(\w+,\s?\w+,)(\s?\w+\))/\1 installation_root_path
 sed -i -r 's/(libcalamares\.job\.configuration\["grubInstall"\],)/\1 "--boot-directory=" + installation_root_path + "\/boot",/g' src/modules/bootloader/main.py
 sed -i -r 's/("--efi-directory=" \+)( efi_directory,)/\1 installation_root_path +\2/g' src/modules/bootloader/main.py
 sed -i -r 's/(libcalamares\.job\.configuration\["grubCfg"\])/installation_root_path + \1/g' src/modules/bootloader/main.py
+
+# Disable use_systemd_naming
+sed -i -r 's/(use_systemd_naming).+/\1 = False/g'

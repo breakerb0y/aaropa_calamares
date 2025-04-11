@@ -233,18 +233,18 @@
           editable: true
           default: "1280x720"
 
-- name: "Bootloader"
-  distinct: true
-  options:
-    - name: "Use GNU GRUB bootloader"
-      description: "androidboot.bootctrl_bootcfg=/boot/grub/android.cfg"
-      selected: true
-    - name: "Use rEFInd bootloader"
-      description: "androidboot.bootctrl_bootcfg=/boot/efi/EFI/refind/android.conf"
-    - name: "Manual configurations"
-      description: "androidboot.bootctrl_bootcfg="
-      editable: true
-      default: "/ab.env.cfg"
+# - name: "Bootloader"
+#   distinct: true
+#   options:
+#     - name: "Use GNU GRUB bootloader"
+#       description: "androidboot.bootctrl_bootcfg=/boot/grub/android.cfg"
+#       selected: true
+#     - name: "Use rEFInd bootloader"
+#       description: "androidboot.bootctrl_bootcfg=/boot/efi/EFI/refind/android.conf"
+#     - name: "Manual configurations"
+#       description: "androidboot.bootctrl_bootcfg="
+#       editable: true
+#       default: "/ab.env.cfg"
 
 - name: "Recovery"
   options:

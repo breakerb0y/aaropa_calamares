@@ -1,0 +1,14 @@
+#!/bin/sh
+
+gxmessage -center -buttons "GRUB:3,rEFInd:4,None:5" -name "Calamares" "Specify bootloader to continue"
+
+case "$?" in
+	3) BOOTLOADER=grub ;;
+	4) BOOTLOADER=refind ;;
+	5) BOOTLOADER=none ;;
+	*) exit 1 ;;
+esac
+
+sed -i -r 's/efiBootLoader: .+/efiBootLoader: "'"$BOOTLOADER"'"/g' /usr/share/calamares/modules/bootloader.conf
+
+calamares "$@"
