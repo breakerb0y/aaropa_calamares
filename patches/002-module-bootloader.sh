@@ -15,4 +15,4 @@ sed -i -r 's/(libcalamares\.job\.configuration\["grubCfg"\])/installation_root_p
 sed -i -r 's/(use_systemd_naming = ).+/\1False/g' src/modules/bootloader/main.py
 
 # Return right after refind-install to prevent non-related configurations
-sed -i -r 's/(\s+)(check_target_env_call\(\["refind-install"\]\))/\1\2\n\1open(conf_path, "w")\n\1return/g' src/modules/bootloader/main.py
+sed -i -r 's/(\s+)(check_target_env_call)\(\["refind-install"\]\)/\1\2(["refind-install --alldrivers"])\n\1open(conf_path, "w")\n\1return/g' src/modules/bootloader/main.py
