@@ -49,10 +49,10 @@ mkdir -p "$(dirname $CUSTOM_CONFIG_FILE)"
 cat <<EOF >>"$CUSTOM_CONFIG_FILE"
 
 menuentry "$TITLE" {
-  icon /EFI/refind/icons/blissos.png
   volume $ROOT_PARTUUID
+  icon /EFI/refind/icons/blissos.png
   loader /kernel_a
-  initrd /initrd_a
+  initrd /initrd_a.img
   options "androidboot.mode=normal $CMDLINE ROOT=$ROOT_DEVICE SRC=$SRC androidboot.slot_suffix=_a"
   submenuentry "Recovery mode" {
     add_options "$RECOVERY_PARAMETERS"
