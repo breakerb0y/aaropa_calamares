@@ -8,6 +8,7 @@ done
 # Modules to build:
 _modules="
 	bootcfg
+	boot-postcfg
 	bootloader
 	finished
 	fsresizer
