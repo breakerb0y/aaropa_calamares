@@ -20,7 +20,6 @@ ADVANCED_ARGS=(
 )
 
 RECOVERY_ARGS=(
-	""
 	"Debug mode: DEBUG=2 androidboot.enable_console=1"
 	"RGBX_8888 color mode: androidboot.pixel_format=RGBX_8888"
 	"ABGR_8888 color mode: androidboot.pixel_format=ABGR_8888"
@@ -50,7 +49,7 @@ cat <<EOF >>"$CUSTOM_CONFIG_FILE"
 
 menuentry "$TITLE" {
   volume $ROOT_PARTUUID
-  icon /EFI/refind/icons/blissos.png
+  icon \\\\boot\\\\blissos.png
   loader /kernel_a
   initrd /initrd_a.img
   options "androidboot.mode=normal $CMDLINE ROOT=$ROOT_DEVICE SRC=$SRC androidboot.slot_suffix=_a"

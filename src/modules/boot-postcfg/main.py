@@ -82,6 +82,15 @@ def run():
     calamares_shared = sys_prefix + "/calamares"
     scriptdir = calamares_shared + "/scripts"
 
+    partitions = libcalamares.globalstorage.value("partitions")
+
+    filesystems = []
+
+    for partition in partitions:
+        if partition["fs"] == "linuxswap":
+            continue
+        filesystems.append(partition["fs"])
+
     options = libcalamares.globalstorage.value("options")
     cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
 
@@ -93,7 +102,7 @@ def run():
         command = [
             scriptdir + "/refind-postconf",
             root_mount_point,
-            cmdline,
+            " ".join(filesystems),
         ]
     else:
         libcalamares.utils.warning("Unsupported bootloader: {}".format(bootloader))

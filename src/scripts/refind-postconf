@@ -2,9 +2,51 @@
 # shellcheck disable=SC2086,SC2001,SC2154,SC1091
 set -e
 
-root=$1
+ROOT=$1
 shift
 
-CONFIG_FILE=$root/boot/efi/EFI/refind/refind.conf
+# check cpu architecure
+machine=$(uname -m)
+case "$machine" in
+i?86 | x86_*) : x86 ;;
+arm* | aarch*) : arm ;;
+*)
+	echo "ERROR: Unsupported processor architecture!" >&2
+	exit 1
+	;;
+esac
+GENKERNEL_ARCH=$_
+
+if uname -m | grep -q 64 || grep -q lm /proc/cpuinfo; then
+	case "$GENKERNEL_ARCH" in
+	x86) EFI_ARCH_SHORT=x64 ;;
+	arm) EFI_ARCH_SHORT=aa64 ;;
+	esac
+else
+	case "$GENKERNEL_ARCH" in
+	x86) EFI_ARCH_SHORT=ia32 ;;
+	arm)
+		echo "ERROR: Unsupported processor architecture!" >&2
+		exit 1
+		;;
+	esac
+fi
+
+TARGET_CONFIG_DIR=$ROOT/boot/efi/EFI/refind
+TARGET_DRIVER_DIR=$TARGET_CONFIG_DIR/drivers_$EFI_ARCH_SHORT
+SOURCE_DRIVER_DIR=/usr/share/refind/drivers_$EFI_ARCH_SHORT
+CONFIG_FILE=$TARGET_CONFIG_DIR/refind.conf
 
 echo 'include android.conf' >>$CONFIG_FILE
+
+mkdir -p $TARGET_DRIVER_DIR
+
+# shellcheck disable=SC2068
+for fs in $@; do
+	case "$fs" in
+	ext3) fs=ext2 ;;
+	vfat) continue ;;
+	*) ;;
+	esac
+	cp -L -t "$TARGET_DRIVER_DIR" "$SOURCE_DRIVER_DIR/${fs}_${EFI_ARCH_SHORT}.efi"
+done
