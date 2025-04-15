@@ -37,12 +37,6 @@ ADVANCED_ARGS=(
 RECOVERY_ARGS=(
 	""
 	"Debug mode: DEBUG=2 androidboot.enable_console=1"
-	"RGBX_8888 color mode: androidboot.pixel_format=RGBX_8888"
-	"ABGR_8888 color mode: androidboot.pixel_format=ABGR_8888"
-	"ARGB_8888 color mode: androidboot.pixel_format=ARGB_8888"
-	"BGRA_8888 color mode: androidboot.pixel_format=BGRA_8888"
-	"RGBA_8888 color mode: androidboot.pixel_format=RGBA_8888"
-	"BGRX_8888 color mode: androidboot.pixel_format=BGRX_8888"
 )
 
 disk="$(prepare_grub_to_access_device "$GRUB_DEVICE")"
