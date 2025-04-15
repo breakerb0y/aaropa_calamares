@@ -252,6 +252,10 @@
       description: "DEBUG_NET_PORT="
       editable: true
       default: "5555 "
+    - name: "Force default color format"
+      description: "androidboot.pixel_format="
+      editable: true
+      default: "RGBX_8888"
 
 - name: "Camera"
   options:
