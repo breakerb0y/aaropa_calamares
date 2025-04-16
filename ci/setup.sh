@@ -3,6 +3,8 @@
 
 cd "$(dirname "$0")"
 
+./update-version.sh
+
 _ver=$(head -1 debian/changelog | grep -Eo '[0-9]+(\.[0-9]+){2,}-[0-9]+')
 pkgver=$(echo "${_ver}" | awk -F - '{print $1}')
 
