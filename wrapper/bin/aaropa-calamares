@@ -1,13 +1,58 @@
 #!/bin/sh
 
-gxmessage -center -buttons "GRUB:3,rEFInd:4,None:5" -name "Calamares" "Specify bootloader to continue"
+arg_bootloader() {
+	[ "$1" ] || return 1
+	case "$1" in
+	grub | refind | none) BOOTLOADER=$1 && shift ;;
+	*) return 1 ;;
+	esac
+}
 
-case "$?" in
+# GRUB supports all available BIOS/UEFI architecture by default
+# No bootloader is obviously
+# Refind only supports x64, ia32 and aa64
+arch_checker() {
+	case "$BOOTLOADER" in
+	grub | none) ;;
+	refind) if [ "$EFI_SIZE" = none ]; then
+		echo "ERROR: rEFInd cannot be installed on non-UEFI systems"
+		exit 1
+	else
+		case "$ARCH" in
+		x86_64 | amd64 | x86 | i*86 | arm64 | aarch64* | armv8*) ;;
+		*)
+			echo "ERROR: rEFInd only supports x64, ia32 and aa64 systems"
+			exit 1
+			;;
+		esac
+	fi ;;
+	esac
+}
+
+ARCH=$(uname -m)
+
+if [ -d /sys/firmware/efi ]; then
+	EFI_SIZE=$(cat /sys/firmware/efi/fw_platform_size)
+else
+	EFI_SIZE=none
+fi
+
+if ! arg_bootloader "$1"; then
+	if [ "$EFI_SIZE" = none ]; then
+		BUTTONS='GRUB:3,None:5'
+	else
+		BUTTONS='GRUB:3,rEFInd:4,None:5'
+	fi
+
+	gxmessage -center -buttons "$BUTTONS" -name "Calamares" "Specify bootloader to continue"
+
+	case "$?" in
 	3) BOOTLOADER=grub ;;
 	4) BOOTLOADER=refind ;;
 	5) BOOTLOADER=none ;;
 	*) exit 1 ;;
-esac
+	esac
+fi
 
 sed -i -r 's/efiBootLoader: .+/efiBootLoader: "'"$BOOTLOADER"'"/g' /usr/share/calamares/modules/bootloader.conf
 
