@@ -92,7 +92,7 @@ def run():
         filesystems.append(partition["fs"])
 
     options = libcalamares.globalstorage.value("options")
-    cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
+    cmdline = (open("/cdrom/cmdline.txt", "r").readline() + " " + options).replace('\n', ' ')
 
     if is_bootloader("grub"):
         bootloader = "grub"

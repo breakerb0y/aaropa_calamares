@@ -78,7 +78,7 @@ def run():
         )
 
     options = libcalamares.globalstorage.value("options")
-    cmdline = open("/cdrom/cmdline.txt", "r").readline() + " " + options
+    cmdline = (open("/cdrom/cmdline.txt", "r").readline() + " " + options).replace('\n', ' ')
 
     bl_conf = calamares_shared + "/modules/bootloader.conf"
     if is_bootloader("grub"):

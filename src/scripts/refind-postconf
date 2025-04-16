@@ -34,7 +34,7 @@ fi
 
 TARGET_CONFIG_DIR=$ROOT/boot/efi/EFI/refind
 TARGET_DRIVER_DIR=$TARGET_CONFIG_DIR/drivers_$EFI_ARCH_SHORT
-SOURCE_DRIVER_DIR=/usr/share/refind/drivers_$EFI_ARCH_SHORT
+SOURCE_DRIVER_DIR=/usr/share/refind/refind/drivers_$EFI_ARCH_SHORT
 CONFIG_FILE=$TARGET_CONFIG_DIR/refind.conf
 
 echo 'include android.conf' >>$CONFIG_FILE
@@ -45,7 +45,7 @@ mkdir -p $TARGET_DRIVER_DIR
 for fs in $@; do
 	case "$fs" in
 	ext3) fs=ext2 ;;
-	vfat) continue ;;
+	vfat | fat* | unknown) continue ;;
 	*) ;;
 	esac
 	cp -L -t "$TARGET_DRIVER_DIR" "$SOURCE_DRIVER_DIR/${fs}_${EFI_ARCH_SHORT}.efi"
