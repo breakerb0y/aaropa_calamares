@@ -93,5 +93,8 @@ def run():
             else:
                 print("$FS/data userdata", file=fstab_file)
 
+        if os.path.isdir('/sys/firmware/efi'):
+            print("none /sys/firmware/efi/efivars efivarfs defaults defaults", file=fstab_file)
+
     libcalamares.job.setprogress(1.0)
     return None
