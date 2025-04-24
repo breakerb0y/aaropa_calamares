@@ -86,6 +86,10 @@
       description: "SET_SF_ROTATION=true"
     - name: "Forced orientation"
       description: "SET_OVERRIDE_FORCED_ORIENT=true"
+    - name: "Delay sensors load by seconds (recommend for tablets that uses iio)"
+      description: "SENSORS_DELAY_INIT="
+      editable: true
+      default: "5"
 
 - name: "Battery"
   options:
