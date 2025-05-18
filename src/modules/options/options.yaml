@@ -102,6 +102,17 @@
     - name: "Set fake battery info by AOSP"
       description: "androidboot.fake_battery=1"
 
+- name: "Power"
+  options:
+    - name: "Set default sleep state"
+      description: "SLEEP_STATE="
+      editable: true
+      default: "mem "
+    - name: "Turn off non-boot CPUs when suspend"
+      description: "POWER_NONBOOT_CPU_OFF=1"
+    - name: "Force max cstate level to 2 for Intel CPUs (recommend for some Intel Atom SoCs)"
+      description: "intel_idle.max_cstate=2"
+
 - name: "Audio"
   distinct: true
   options:
@@ -236,6 +247,8 @@
           description: "virtio-gpu.force_resolution="
           editable: true
           default: "1280x720"
+        - name: "Disable nouveau driver for Nvidia GPUs"
+          description: "nouveau.modeset=0"
 
 # - name: "Bootloader"
 #   distinct: true
