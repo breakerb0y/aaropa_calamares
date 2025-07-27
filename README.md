@@ -5,6 +5,8 @@
 # Calamares: Distribution-Independent Installer Framework
 ---------
 
+**Deprecated, moving to the [new repository](https://github.com/Ananda-Aropa/aaropa_calamares)**
+
 [![Current issue](https://img.shields.io/badge/issue-in_progress-FE9B48)](https://github.com/calamares/calamares/labels/hacking%3A%20in-progress)
 [![GitHub release](https://img.shields.io/github/release/calamares/calamares.svg)](https://github.com/calamares/calamares/releases)
 [![GitHub Build Status](https://img.shields.io/github/actions/workflow/status/calamares/calamares/push.yml)](https://github.com/calamares/calamares/actions?query=workflow%3Aci)
