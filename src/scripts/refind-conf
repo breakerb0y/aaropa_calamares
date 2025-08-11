@@ -11,7 +11,7 @@ shift
 export TEXTDOMAIN=grub
 export TEXTDOMAINDIR="${datarootdir}/locale"
 
-TITLE="BlissOS $(grep 'ro.bliss.version=' /system/build.prop | awk -F'=' '{print $2}')"
+TITLE="GpDroid $(grep 'ro.bliss.version=' /system/build.prop | awk -F'=' '{print $2}')"
 
 ADVANCED_ARGS=(
 	"Debug mode: DEBUG=2 androidboot.enable_console=1"
